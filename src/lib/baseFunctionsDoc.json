@@ -1,0 +1,1637 @@
+{
+  "Math.abs": {
+    "description": "Returns the absolute (positive) value of the input.",
+    "example": "Math.abs(-3) -> 3",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.acos": {
+    "description": "Returns the arccosine (inverse cosine) of a number, in radians.",
+    "example": "Math.acos(1) -> 0",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.asin": {
+    "description": "Returns the arcsine (inverse sine) of a number, in radians.",
+    "example": "Math.asin(1) -> 1.5707963267948966",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.atan": {
+    "description": "Returns the arctangent (inverse tangent) of a number, in radians.",
+    "example": "Math.atan(1) -> 0.7853981633974483",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.atan2": {
+    "description": "Returns the arctangent of the quotient of its arguments, in radians.",
+    "example": "Math.atan2(1, 1) -> 0.7853981633974483",
+    "input_type": [
+      "number",
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.ceil": {
+    "description": "Returns the smallest integer greater than or equal to the input.",
+    "example": "Math.ceil(4.1) -> 5",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.cos": {
+    "description": "Returns the cosine of the input, in radians.",
+    "example": "Math.cos(Math.PI) -> -1",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.exp": {
+    "description": "Returns Euler's number raised to the power of the input.",
+    "example": "Math.exp(1) -> 2.718281828459045",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.floor": {
+    "description": "Returns the largest integer less than or equal to the input.",
+    "example": "Math.floor(4.9) -> 4",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.log": {
+    "description": "Returns the natural logarithm (base e) of the input.",
+    "example": "Math.log(1) -> 0",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.max": {
+    "description": "Returns the largest of zero or more numbers.",
+    "example": "Math.max(1, 2, 3) -> 3",
+    "input_type": [
+      "number",
+      "number",
+      "..."
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.min": {
+    "description": "Returns the smallest of zero or more numbers.",
+    "example": "Math.min(1, 2, 3) -> 1",
+    "input_type": [
+      "number",
+      "number",
+      "..."
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.pow": {
+    "description": "Returns the base raised to the exponent power.",
+    "example": "Math.pow(2, 3) -> 8",
+    "input_type": [
+      "number",
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.random": {
+    "description": "Returns a pseudo-random number between 0 (inclusive) and 1 (exclusive).",
+    "example": "Math.random() -> 0.123456789",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.round": {
+    "description": "Returns the value of the input rounded to the nearest integer.",
+    "example": "Math.round(4.5) -> 5",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.sin": {
+    "description": "Returns the sine of the input, in radians.",
+    "example": "Math.sin(Math.PI / 2) -> 1",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.sqrt": {
+    "description": "Returns the square root of the input.",
+    "example": "Math.sqrt(9) -> 3",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.tan": {
+    "description": "Returns the tangent of the input, in radians.",
+    "example": "Math.tan(Math.PI / 4) -> 1",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.E": {
+    "description": "Euler's number, the base of natural logarithms.",
+    "example": "Math.E -> 2.718281828459045",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.LN2": {
+    "description": "The natural logarithm of 2.",
+    "example": "Math.LN2 -> 0.6931471805599453",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.LN10": {
+    "description": "The natural logarithm of 10.",
+    "example": "Math.LN10 -> 2.302585092994046",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.LOG2E": {
+    "description": "The base 2 logarithm of e.",
+    "example": "Math.LOG2E -> 1.4426950408889634",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.LOG10E": {
+    "description": "The base 10 logarithm of e.",
+    "example": "Math.LOG10E -> 0.4342944819032518",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.PI": {
+    "description": "The ratio of the circumference of a circle to its diameter.",
+    "example": "Math.PI -> 3.141592653589793",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.SQRT1_2": {
+    "description": "The square root of 1/2.",
+    "example": "Math.SQRT1_2 -> 0.7071067811865476",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Math.SQRT2": {
+    "description": "The square root of 2.",
+    "example": "Math.SQRT2 -> 1.41421356237",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.now": {
+    "description": "Returns the number of milliseconds elapsed since January 1, 1970, 00:00:00 UTC.",
+    "example": "Date.now() -> 1672531200000",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.parse": {
+    "description": "Parses a date string and returns the number of milliseconds since January 1, 1970, 00:00:00 UTC.",
+    "example": "Date.parse('2023-01-01T00:00:00Z') -> 1672531200000",
+    "input_type": [
+      "string"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.UTC": {
+    "description": "Returns the number of milliseconds between January 1, 1970, 00:00:00 UTC and a specified date.",
+    "example": "Date.UTC(2023, 0, 1) -> 1672531200000",
+    "input_type": [
+      "number",
+      "number",
+      "number",
+      "number?",
+      "number?",
+      "number?",
+      "number?"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.constructor": {
+    "description": "Creates a new Date object representing a specific date and time.",
+    "example": "new Date('2023-01-01') -> Date object",
+    "input_type": [
+      "string | number | number[]"
+    ],
+    "output_type": [
+      "Date"
+    ]
+  },
+  "Date.toString": {
+    "description": "Returns a string representation of the Date object.",
+    "example": "new Date().toString() -> 'Mon Dec 23 2023 12:34:56 GMT+0000 (UTC)'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "Date.toDateString": {
+    "description": "Returns the date portion of the Date object as a human-readable string.",
+    "example": "new Date().toDateString() -> 'Mon Dec 23 2023'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "Date.toTimeString": {
+    "description": "Returns the time portion of the Date object as a human-readable string.",
+    "example": "new Date().toTimeString() -> '12:34:56 GMT+0000 (UTC)'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "Date.toISOString": {
+    "description": "Returns a string in ISO 8601 format representing the Date object.",
+    "example": "new Date().toISOString() -> '2023-12-23T12:34:56.789Z'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "Date.toUTCString": {
+    "description": "Returns a string representation of the Date object in UTC time.",
+    "example": "new Date().toUTCString() -> 'Sat, 23 Dec 2023 12:34:56 GMT'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "Date.toGMTString": {
+    "description": "Returns a string representation of the Date object in GMT time (deprecated).",
+    "example": "new Date().toGMTString() -> 'Sat, 23 Dec 2023 12:34:56 GMT'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "Date.getDate": {
+    "description": "Returns the day of the month for the Date object.",
+    "example": "new Date().getDate() -> 23",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.setDate": {
+    "description": "Sets the day of the month for the Date object.",
+    "example": "new Date().setDate(15) -> 1671148800000",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.getDay": {
+    "description": "Returns the day of the week for the Date object (0 for Sunday, 6 for Saturday).",
+    "example": "new Date().getDay() -> 6",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.getFullYear": {
+    "description": "Returns the year of the Date object.",
+    "example": "new Date().getFullYear() -> 2023",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.setFullYear": {
+    "description": "Sets the year for the Date object.",
+    "example": "new Date().setFullYear(2024) -> 1704028800000",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.getHours": {
+    "description": "Returns the hour (0–23) of the Date object.",
+    "example": "new Date().getHours() -> 12",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.setHours": {
+    "description": "Sets the hour for the Date object.",
+    "example": "new Date().setHours(6) -> 1671182400000",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.getMilliseconds": {
+    "description": "Returns the milliseconds (0–999) of the Date object.",
+    "example": "new Date().getMilliseconds() -> 789",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.setMilliseconds": {
+    "description": "Sets the milliseconds for the Date object.",
+    "example": "new Date().setMilliseconds(500) -> 1672531245500",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.getMinutes": {
+    "description": "Returns the minutes (0–59) of the Date object.",
+    "example": "new Date().getMinutes() -> 34",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.setMinutes": {
+    "description": "Sets the minutes for the Date object.",
+    "example": "new Date().setMinutes(45) -> 1672531500000",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.getMonth": {
+    "description": "Returns the month (0–11) of the Date object.",
+    "example": "new Date().getMonth() -> 11",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.setMonth": {
+    "description": "Sets the month for the Date object.",
+    "example": "new Date().setMonth(5) -> 1688092800000",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.getSeconds": {
+    "description": "Returns the seconds (0–59) of the Date object.",
+    "example": "new Date().getSeconds() -> 56",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.setSeconds": {
+    "description": "Sets the seconds for the Date object.",
+    "example": "new Date().setSeconds(30) -> 1672531230000",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.getTime": {
+    "description": "Returns the numeric value of the Date object as the number of milliseconds since January 1, 1970, 00:00:00 UTC.",
+    "example": "new Date().getTime() -> 1672531236789",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.setTime": {
+    "description": "Sets the time for the Date object as the number of milliseconds since January 1, 1970, 00:00:00 UTC.",
+    "example": "new Date().setTime(1672531200000) -> 1672531200000",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.getTimezoneOffset": {
+    "description": "Returns the difference in minutes between the local time zone and UTC.",
+    "example": "new Date().getTimezoneOffset() -> -60",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.getUTCDate": {
+    "description": "Returns the day of the month (1–31) for the Date object in UTC time.",
+    "example": "new Date().getUTCDate() -> 23",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.setUTCDate": {
+    "description": "Sets the day of the month (1–31) for the Date object in UTC time.",
+    "example": "new Date().setUTCDate(15) -> 1672531200000",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.getUTCDay": {
+    "description": "Returns the day of the week (0–6) for the Date object in UTC time.",
+    "example": "new Date().getUTCDay() -> 6",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.getUTCFullYear": {
+    "description": "Returns the full year (including century) for the Date object in UTC time.",
+    "example": "new Date().getUTCFullYear() -> 2023",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.setUTCFullYear": {
+    "description": "Sets the full year (including century) for the Date object in UTC time.",
+    "example": "new Date().setUTCFullYear(2024) -> 1704028800000",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.getUTCHours": {
+    "description": "Returns the hour (0–23) for the Date object in UTC time.",
+    "example": "new Date().getUTCHours() -> 12",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.setUTCHours": {
+    "description": "Sets the hour (0–23) for the Date object in UTC time.",
+    "example": "new Date().setUTCHours(6) -> 1671182400000",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.getUTCMilliseconds": {
+    "description": "Returns the milliseconds (0–999) for the Date object in UTC time.",
+    "example": "new Date().getUTCMilliseconds() -> 789",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.setUTCMilliseconds": {
+    "description": "Sets the milliseconds (0–999) for the Date object in UTC time.",
+    "example": "new Date().setUTCMilliseconds(500) -> 1672531245500",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.getUTCMinutes": {
+    "description": "Returns the minutes (0–59) for the Date object in UTC time.",
+    "example": "new Date().getUTCMinutes() -> 34",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.setUTCMinutes": {
+    "description": "Sets the minutes (0–59) for the Date object in UTC time.",
+    "example": "new Date().setUTCMinutes(45) -> 1672531500000",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.getUTCMonth": {
+    "description": "Returns the month (0–11) for the Date object in UTC time.",
+    "example": "new Date().getUTCMonth() -> 11",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.setUTCMonth": {
+    "description": "Sets the month (0–11) for the Date object in UTC time.",
+    "example": "new Date().setUTCMonth(5) -> 1688092800000",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.getUTCSeconds": {
+    "description": "Returns the seconds (0–59) for the Date object in UTC time.",
+    "example": "new Date().getUTCSeconds() -> 56",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.setUTCSeconds": {
+    "description": "Sets the seconds (0–59) for the Date object in UTC time.",
+    "example": "new Date().setUTCSeconds(30) -> 1672531230000",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.valueOf": {
+    "description": "Returns the primitive value of the Date object as the number of milliseconds since January 1, 1970, 00:00:00 UTC.",
+    "example": "new Date().valueOf() -> 1672531236789",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.getYear": {
+    "description": "Returns the year minus 1900 for the Date object (deprecated).",
+    "example": "new Date().getYear() -> 123",
+    "input_type": [],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.setYear": {
+    "description": "Sets the year for the Date object, where the year is the number of years since 1900 (deprecated).",
+    "example": "new Date().setYear(124) -> 1704028800000",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Date.toJSON": {
+    "description": "Returns a string representing the Date object for use in JSON encoding.",
+    "example": "new Date().toJSON() -> '2023-12-23T12:34:56.789Z'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "Date.toLocaleString": {
+    "description": "Returns a string representing the Date object in the local time zone.",
+    "example": "new Date().toLocaleString() -> '12/23/2023, 12:34:56 PM'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "Date.toLocaleDateString": {
+    "description": "Returns a string representing the date portion of the Date object in the local time zone.",
+    "example": "new Date().toLocaleDateString() -> '12/23/2023'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "Date.toLocaleTimeString": {
+    "description": "Returns a string representing the time portion of the Date object in the local time zone.",
+    "example": "new Date().toLocaleTimeString() -> '12:34:56 PM'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "RegExp.constructor": {
+    "description": "Creates a new regular expression object. This method is the constructor for the RegExp object.",
+    "example": "new RegExp('^a.*b$') -> /a.*b/",
+    "input_type": [
+      "string",
+      "string"
+    ],
+    "output_type": [
+      "RegExp"
+    ]
+  },
+  "RegExp.exec": {
+    "description": "Executes a search for a match in a string. Returns an array of information or null if no match is found.",
+    "example": "/abc/.exec('abcdef') -> ['abc']",
+    "input_type": [
+      "string"
+    ],
+    "output_type": [
+      "array|null"
+    ]
+  },
+  "RegExp.compile": {
+    "description": "Re-compiles the regular expression with a new pattern and optional flags.",
+    "example": "/abc/.compile('def') -> /def/",
+    "input_type": [
+      "string",
+      "string"
+    ],
+    "output_type": [
+      "RegExp"
+    ]
+  },
+  "RegExp.toString": {
+    "description": "Returns a string representing the regular expression.",
+    "example": "/abc/.toString() -> '/abc/'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "RegExp.test": {
+    "description": "Tests if a string matches a regular expression. Returns true if there's a match, false otherwise.",
+    "example": "/abc/.test('abcdef') -> true",
+    "input_type": [
+      "string"
+    ],
+    "output_type": [
+      "boolean"
+    ]
+  },
+  "String.constructor": {
+    "description": "Creates a new string object from the given value. This method is the constructor for the String object.",
+    "example": "new String('hello') -> 'hello'",
+    "input_type": [
+      "any"
+    ],
+    "output_type": [
+      "String"
+    ]
+  },
+  "String.anchor": {
+    "description": "Wraps the string in an HTML anchor tag with the specified name attribute.",
+    "example": "'hello'.anchor('greeting') -> '<a name=\"greeting\">hello</a>'",
+    "input_type": [
+      "string"
+    ],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.at": {
+    "description": "Returns the character at the specified index (similar to charAt but works with code points).",
+    "example": "'hello'.at(1) -> 'e'",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.big": {
+    "description": "Wraps the string in an HTML `<big>` tag, making the text bigger.",
+    "example": "'hello'.big() -> '<big>hello</big>'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.blink": {
+    "description": "Wraps the string in an HTML `<blink>` tag, making the text blink (deprecated).",
+    "example": "'hello'.blink() -> '<blink>hello</blink>'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.bold": {
+    "description": "Wraps the string in an HTML `<b>` tag, making the text bold.",
+    "example": "'hello'.bold() -> '<b>hello</b>'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.charAt": {
+    "description": "Returns the character at the specified index in the string.",
+    "example": "'hello'.charAt(1) -> 'e'",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.charCodeAt": {
+    "description": "Returns the Unicode value of the character at the specified index.",
+    "example": "'hello'.charCodeAt(1) -> 101",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "String.codePointAt": {
+    "description": "Returns the Unicode code point value of the character at the specified index, handling surrogate pairs.",
+    "example": "'hello'.codePointAt(1) -> 101",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "String.concat": {
+    "description": "Combines two or more strings into one.",
+    "example": "'hello'.concat(' ', 'world') -> 'hello world'",
+    "input_type": [
+      "string"
+    ],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.endsWith": {
+    "description": "Checks if the string ends with the specified substring.",
+    "example": "'hello'.endsWith('lo') -> true",
+    "input_type": [
+      "string"
+    ],
+    "output_type": [
+      "boolean"
+    ]
+  },
+  "String.fontcolor": {
+    "description": "Wraps the string in an HTML `<font>` tag with a specified color.",
+    "example": "'hello'.fontcolor('red') -> '<font color=\"red\">hello</font>'",
+    "input_type": [
+      "string"
+    ],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.fontsize": {
+    "description": "Wraps the string in an HTML `<font>` tag with a specified size.",
+    "example": "'hello'.fontsize(4) -> '<font size=\"4\">hello</font>'",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.fixed": {
+    "description": "Wraps the string in an HTML `<tt>` tag, making the text fixed-width.",
+    "example": "'hello'.fixed() -> '<tt>hello</tt>'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.includes": {
+    "description": "Checks if the string contains the specified substring.",
+    "example": "'hello'.includes('ell') -> true",
+    "input_type": [
+      "string"
+    ],
+    "output_type": [
+      "boolean"
+    ]
+  },
+  "String.indexOf": {
+    "description": "Returns the index of the first occurrence of the specified substring, or -1 if not found.",
+    "example": "'hello'.indexOf('e') -> 1",
+    "input_type": [
+      "string"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "String.isWellFormed": {
+    "description": "Checks if the string is a well-formed Unicode string (no unpaired surrogate characters).",
+    "example": "'hello'.isWellFormed() -> true",
+    "input_type": [],
+    "output_type": [
+      "boolean"
+    ]
+  },
+  "String.italics": {
+    "description": "Wraps the string in an HTML `<i>` tag, making the text italic.",
+    "example": "'hello'.italics() -> '<i>hello</i>'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.lastIndexOf": {
+    "description": "Returns the index of the last occurrence of the specified substring, or -1 if not found.",
+    "example": "'hello'.lastIndexOf('l') -> 3",
+    "input_type": [
+      "string"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "String.link": {
+    "description": "Wraps the string in an HTML `<a>` tag with the specified URL.",
+    "example": "'hello'.link('http://example.com') -> '<a href=\"http://example.com\">hello</a>'",
+    "input_type": [
+      "string"
+    ],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.localeCompare": {
+    "description": "Compares two strings in the current locale, returning a number indicating the relative order of the strings.",
+    "example": "'apple'.localeCompare('banana') -> -1",
+    "input_type": [
+      "string"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "String.match": {
+    "description": "Searches for a match between a regular expression and the string, returning an array of results.",
+    "example": "'abc123'.match(/\\d+/) -> ['123']",
+    "input_type": [
+      "RegExp"
+    ],
+    "output_type": [
+      "array|null"
+    ]
+  },
+  "String.matchAll": {
+    "description": "Returns an iterator for all matches of a regular expression in the string.",
+    "example": "'abc123abc'.matchAll(/\\d+/g) -> [['123'], ['123']]",
+    "input_type": [
+      "RegExp"
+    ],
+    "output_type": [
+      "Iterator"
+    ]
+  },
+  "String.normalize": {
+    "description": "Returns the string in a normalized form (e.g., canonical equivalence).",
+    "example": "'a\u0301'.normalize() -> 'á'",
+    "input_type": [
+      "string"
+    ],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.padEnd": {
+    "description": "Pads the string with a specified string until it reaches a certain length, from the end.",
+    "example": "'5'.padEnd(3, '0') -> '500'",
+    "input_type": [
+      "number",
+      "string"
+    ],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.padStart": {
+    "description": "Pads the string with a specified string until it reaches a certain length, from the start.",
+    "example": "'5'.padStart(3, '0') -> '005'",
+    "input_type": [
+      "number",
+      "string"
+    ],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.repeat": {
+    "description": "Returns a new string with the specified number of copies of the string.",
+    "example": "'abc'.repeat(3) -> 'abcabcabc'",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.replace": {
+    "description": "Replaces the first match of a substring or regular expression in the string with a new substring.",
+    "example": "'hello'.replace('l', 'z') -> 'hezlo'",
+    "input_type": [
+      "string|RegExp",
+      "string"
+    ],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.replaceAll": {
+    "description": "Replaces all matches of a substring or regular expression in the string with a new substring.",
+    "example": "'hello'.replaceAll('l', 'z') -> 'hezzo'",
+    "input_type": [
+      "string|RegExp",
+      "string"
+    ],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.search": {
+    "description": "Searches for the first match of a regular expression in the string and returns its index.",
+    "example": "'hello'.search(/l/) -> 2",
+    "input_type": [
+      "RegExp"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "String.slice": {
+    "description": "Extracts a section of the string and returns it as a new string.",
+    "example": "'hello'.slice(1, 4) -> 'ell'",
+    "input_type": [
+      "number",
+      "number"
+    ],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.small": {
+    "description": "Wraps the string in an HTML `<small>` tag, making the text smaller.",
+    "example": "'hello'.small() -> '<small>hello</small>'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.split": {
+    "description": "Splits the string into an array of substrings, based on a specified delimiter.",
+    "example": "'hello world'.split(' ') -> ['hello', 'world']",
+    "input_type": [
+      "string|RegExp"
+    ],
+    "output_type": [
+      "array"
+    ]
+  },
+  "String.strike": {
+    "description": "Wraps the string in an HTML `<strike>` tag, striking through the text.",
+    "example": "'hello'.strike() -> '<strike>hello</strike>'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.sub": {
+    "description": "Replicates the behavior of `substr` for older browsers (deprecated).",
+    "example": "'hello'.sub(1, 2) -> 'el'",
+    "input_type": [
+      "number",
+      "number"
+    ],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.substr": {
+    "description": "Returns a substring of the string, starting from a specified index and optionally extending by a specified number of characters.",
+    "example": "'hello'.substr(1, 3) -> 'ell'",
+    "input_type": [
+      "number",
+      "number"
+    ],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.substring": {
+    "description": "Extracts characters from the string between two specified indices.",
+    "example": "'hello'.substring(1, 4) -> 'ell'",
+    "input_type": [
+      "number",
+      "number"
+    ],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.sup": {
+    "description": "Wraps the string in an HTML `<sup>` tag, making the text superscript.",
+    "example": "'hello'.sup() -> '<sup>hello</sup>'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.startsWith": {
+    "description": "Checks if the string starts with the specified substring.",
+    "example": "'hello'.startsWith('he') -> true",
+    "input_type": [
+      "string"
+    ],
+    "output_type": [
+      "boolean"
+    ]
+  },
+  "String.toString": {
+    "description": "Returns a string representation of the string object.",
+    "example": "'hello'.toString() -> 'hello'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.toWellFormed": {
+    "description": "Returns a well-formed version of the string (ensuring valid Unicode).",
+    "example": "'a\u0301'.toWellFormed() -> 'á'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.trim": {
+    "description": "Removes whitespace from both ends of the string.",
+    "example": "'  hello  '.trim() -> 'hello'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.trimStart": {
+    "description": "Removes whitespace from the beginning of the string.",
+    "example": "'  hello'.trimStart() -> 'hello'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.trimLeft": {
+    "description": "Removes whitespace from the beginning of the string (alias for trimStart).",
+    "example": "'  hello'.trimLeft() -> 'hello'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.trimEnd": {
+    "description": "Removes whitespace from the end of the string.",
+    "example": "'hello  '.trimEnd() -> 'hello'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.trimRight": {
+    "description": "Removes whitespace from the end of the string (alias for trimEnd).",
+    "example": "'hello  '.trimRight() -> 'hello'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.toLocaleLowerCase": {
+    "description": "Returns the string in lowercase, using the locale-specific case mappings.",
+    "example": "'HELLO'.toLocaleLowerCase() -> 'hello'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.toLocaleUpperCase": {
+    "description": "Returns the string in uppercase, using the locale-specific case mappings.",
+    "example": "'hello'.toLocaleUpperCase() -> 'HELLO'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.toLowerCase": {
+    "description": "Returns the string in lowercase.",
+    "example": "'HELLO'.toLowerCase() -> 'hello'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.toUpperCase": {
+    "description": "Returns the string in uppercase.",
+    "example": "'hello'.toUpperCase() -> 'HELLO'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "String.valueOf": {
+    "description": "Returns the primitive value of the string object.",
+    "example": "'hello'.valueOf() -> 'hello'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "Array.isArray": {
+    "description": "Checks if the value is an array.",
+    "example": "Array.isArray([1, 2, 3]) -> true",
+    "input_type": [
+      "any"
+    ],
+    "output_type": [
+      "boolean"
+    ]
+  },
+  "Array.from": {
+    "description": "Creates a new array instance from an array-like or iterable object.",
+    "example": "Array.from('hello') -> ['h', 'e', 'l', 'l', 'o']",
+    "input_type": [
+      "array-like|iterable"
+    ],
+    "output_type": [
+      "array"
+    ]
+  },
+  "Array.fromAsync": {
+    "description": "Creates a new array from an asynchronous iterable object.",
+    "example": "async function* generate() { yield 1; yield 2; } Array.fromAsync(generate()) -> [1, 2]",
+    "input_type": [
+      "async iterable"
+    ],
+    "output_type": [
+      "array"
+    ]
+  },
+  "Array.of": {
+    "description": "Creates a new array with a variable number of elements.",
+    "example": "Array.of(1, 2, 3) -> [1, 2, 3]",
+    "input_type": [
+      "any"
+    ],
+    "output_type": [
+      "array"
+    ]
+  },
+  "Array.constructor": {
+    "description": "Returns the constructor function for the array instance.",
+    "example": "const arr = [1, 2, 3]; arr.constructor -> Array",
+    "input_type": [],
+    "output_type": [
+      "function"
+    ]
+  },
+  "Array.at": {
+    "description": "Accesses the element at the specified index, supporting negative indexes.",
+    "example": "[1, 2, 3].at(-1) -> 3",
+    "input_type": [
+      "number"
+    ],
+    "output_type": [
+      "any"
+    ]
+  },
+  "Array.concat": {
+    "description": "Joins two or more arrays into a new array.",
+    "example": "[1].concat([2, 3]) -> [1, 2, 3]",
+    "input_type": [
+      "array"
+    ],
+    "output_type": [
+      "array"
+    ]
+  },
+  "Array.copyWithin": {
+    "description": "Shallow copies part of the array to another location in the same array.",
+    "example": "[1, 2, 3, 4].copyWithin(0, 2) -> [3, 4, 3, 4]",
+    "input_type": [
+      "number",
+      "number?"
+    ],
+    "output_type": [
+      "array"
+    ]
+  },
+  "Array.fill": {
+    "description": "Fills all elements in the array with a specified value.",
+    "example": "[1, 2, 3].fill(0) -> [0, 0, 0]",
+    "input_type": [
+      "any"
+    ],
+    "output_type": [
+      "array"
+    ]
+  },
+  "Array.find": {
+    "description": "Returns the first element in the array that satisfies a testing function.",
+    "example": "[1, 2, 3].find(x => x > 1) -> 2",
+    "input_type": [
+      "function"
+    ],
+    "output_type": [
+      "any"
+    ]
+  },
+  "Array.findIndex": {
+    "description": "Returns the index of the first element in the array that satisfies a testing function.",
+    "example": "[1, 2, 3].findIndex(x => x > 1) -> 1",
+    "input_type": [
+      "function"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Array.findLast": {
+    "description": "Returns the last element in the array that satisfies a testing function.",
+    "example": "[1, 2, 3].findLast(x => x > 1) -> 3",
+    "input_type": [
+      "function"
+    ],
+    "output_type": [
+      "any"
+    ]
+  },
+  "Array.findLastIndex": {
+    "description": "Returns the index of the last element in the array that satisfies a testing function.",
+    "example": "[1, 2, 3].findLastIndex(x => x > 1) -> 2",
+    "input_type": [
+      "function"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Array.lastIndexOf": {
+    "description": "Returns the index of the last occurrence of a specified element.",
+    "example": "[1, 2, 3, 2].lastIndexOf(2) -> 3",
+    "input_type": [
+      "any"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Array.pop": {
+    "description": "Removes the last element from the array and returns it.",
+    "example": "[1, 2, 3].pop() -> 3",
+    "input_type": [],
+    "output_type": [
+      "any"
+    ]
+  },
+  "Array.push": {
+    "description": "Adds one or more elements to the end of the array and returns the new length.",
+    "example": "[1, 2].push(3) -> 3",
+    "input_type": [
+      "any"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Array.reverse": {
+    "description": "Reverses the order of the elements in the array.",
+    "example": "[1, 2, 3].reverse() -> [3, 2, 1]",
+    "input_type": [],
+    "output_type": [
+      "array"
+    ]
+  },
+  "Array.shift": {
+    "description": "Removes the first element from the array and returns it.",
+    "example": "[1, 2, 3].shift() -> 1",
+    "input_type": [],
+    "output_type": [
+      "any"
+    ]
+  },
+  "Array.unshift": {
+    "description": "Adds one or more elements to the beginning of the array and returns the new length.",
+    "example": "[1, 2].unshift(0) -> 3",
+    "input_type": [
+      "any"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Array.slice": {
+    "description": "Returns a shallow copy of a portion of the array.",
+    "example": "[1, 2, 3].slice(1, 2) -> [2]",
+    "input_type": [
+      "number",
+      "number?"
+    ],
+    "output_type": [
+      "array"
+    ]
+  },
+  "Array.sort": {
+    "description": "Sorts the elements of the array in place.",
+    "example": "[3, 1, 2].sort() -> [1, 2, 3]",
+    "input_type": [
+      "function?"
+    ],
+    "output_type": [
+      "array"
+    ]
+  },
+  "Array.splice": {
+    "description": "Changes the contents of the array by removing or replacing elements.",
+    "example": "[1, 2, 3].splice(1, 1) -> [2]",
+    "input_type": [
+      "number",
+      "number",
+      "any"
+    ],
+    "output_type": [
+      "array"
+    ]
+  },
+  "Array.includes": {
+    "description": "Checks if the array contains a specified element.",
+    "example": "[1, 2, 3].includes(2) -> true",
+    "input_type": [
+      "any"
+    ],
+    "output_type": [
+      "boolean"
+    ]
+  },
+  "Array.indexOf": {
+    "description": "Returns the index of the first occurrence of a specified element.",
+    "example": "[1, 2, 3].indexOf(2) -> 1",
+    "input_type": [
+      "any"
+    ],
+    "output_type": [
+      "number"
+    ]
+  },
+  "Array.join": {
+    "description": "Joins the elements of the array into a single string, with an optional separator.",
+    "example": "[1, 2, 3].join('-') -> '1-2-3'",
+    "input_type": [
+      "string?"
+    ],
+    "output_type": [
+      "string"
+    ]
+  },
+  "Array.keys": {
+    "description": "Returns a new array iterator object containing the keys (indices) of the array.",
+    "example": "[1, 2, 3].keys() -> ArrayIterator {0, 1, 2}",
+    "input_type": [],
+    "output_type": [
+      "iterator"
+    ]
+  },
+  "Array.entries": {
+    "description": "Returns a new array iterator object containing key-value pairs for each element.",
+    "example": "[1, 2, 3].entries() -> ArrayIterator {[0, 1], [1, 2], [2, 3]}",
+    "input_type": [],
+    "output_type": [
+      "iterator"
+    ]
+  },
+  "Array.values": {
+    "description": "Returns a new array iterator object containing the values of the array.",
+    "example": "[1, 2, 3].values() -> ArrayIterator {1, 2, 3}",
+    "input_type": [],
+    "output_type": [
+      "iterator"
+    ]
+  },
+  "Array.forEach": {
+    "description": "Executes a provided function once for each array element.",
+    "example": "[1, 2, 3].forEach(x => console.log(x)) -> 1 2 3",
+    "input_type": [
+      "function"
+    ],
+    "output_type": [
+      "undefined"
+    ]
+  },
+  "Array.filter": {
+    "description": "Creates a new array with all elements that pass a test.",
+    "example": "[1, 2, 3].filter(x => x > 1) -> [2, 3]",
+    "input_type": [
+      "function"
+    ],
+    "output_type": [
+      "array"
+    ]
+  },
+  "Array.flat": {
+    "description": "Creates a new array with all sub-array elements concatenated.",
+    "example": "[1, [2, 3]].flat() -> [1, 2, 3]",
+    "input_type": [
+      "number?"
+    ],
+    "output_type": [
+      "array"
+    ]
+  },
+  "Array.flatMap": {
+    "description": "First maps each element using a mapping function, then flattens the result into a new array.",
+    "example": "[1, 2, 3].flatMap(x => [x, x * 2]) -> [1, 2, 2, 4, 3, 6]",
+    "input_type": [
+      "function"
+    ],
+    "output_type": [
+      "array"
+    ]
+  },
+  "Array.map": {
+    "description": "Creates a new array populated with the results of calling a function for every array element.",
+    "example": "[1, 2, 3].map(x => x * 2) -> [2, 4, 6]",
+    "input_type": [
+      "function"
+    ],
+    "output_type": [
+      "array"
+    ]
+  },
+  "Array.every": {
+    "description": "Tests whether all elements in the array pass the test implemented by the provided function.",
+    "example": "[1, 2, 3].every(x => x > 0) -> true",
+    "input_type": [
+      "function"
+    ],
+    "output_type": [
+      "boolean"
+    ]
+  },
+  "Array.some": {
+    "description": "Tests whether at least one element in the array passes the test implemented by the provided function.",
+    "example": "[1, 2, 3].some(x => x > 2) -> true",
+    "input_type": [
+      "function"
+    ],
+    "output_type": [
+      "boolean"
+    ]
+  },
+  "Array.reduce": {
+    "description": "Applies a function against an accumulator and each element in the array to reduce it to a single value.",
+    "example": "[1, 2, 3].reduce((acc, x) => acc + x) -> 6",
+    "input_type": [
+      "function"
+    ],
+    "output_type": [
+      "any"
+    ]
+  },
+  "Array.reduceRight": {
+    "description": "Applies a function against an accumulator and each element in the array (from right to left).",
+    "example": "[1, 2, 3].reduceRight((acc, x) => acc + x) -> 6",
+    "input_type": [
+      "function"
+    ],
+    "output_type": [
+      "any"
+    ]
+  },
+  "Array.toReversed": {
+    "description": "Returns a new array with the elements in reverse order.",
+    "example": "[1, 2, 3].toReversed() -> [3, 2, 1]",
+    "input_type": [],
+    "output_type": [
+      "array"
+    ]
+  },
+  "Array.toSorted": {
+    "description": "Returns a new array with the elements sorted.",
+    "example": "[3, 1, 2].toSorted() -> [1, 2, 3]",
+    "input_type": [
+      "function?"
+    ],
+    "output_type": [
+      "array"
+    ]
+  },
+  "Array.toSpliced": {
+    "description": "Returns a new array with elements removed or added at specified positions.",
+    "example": "[1, 2, 3].toSpliced(1, 1, 4) -> [1, 4, 3]",
+    "input_type": [
+      "number",
+      "number",
+      "any"
+    ],
+    "output_type": [
+      "array"
+    ]
+  },
+  "Array.with": {
+    "description": "Returns a new array with a specified element at a specified index.",
+    "example": "[1, 2, 3].with(1, 4) -> [1, 4, 3]",
+    "input_type": [
+      "number",
+      "any"
+    ],
+    "output_type": [
+      "array"
+    ]
+  },
+  "Array.toLocaleString": {
+    "description": "Returns a localized string representation of the array.",
+    "example": "[1, 2, 3].toLocaleString() -> '1,2,3'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  },
+  "Array.toString": {
+    "description": "Returns a string representation of the array.",
+    "example": "[1, 2, 3].toString() -> '1,2,3'",
+    "input_type": [],
+    "output_type": [
+      "string"
+    ]
+  }
+}
