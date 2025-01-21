@@ -1,4 +1,4 @@
-import { functionRegistry } from "./functionRegistry.js"
+import { functionRegistry } from "./baseFunctionRegistry.js"
 
 /**
  * 

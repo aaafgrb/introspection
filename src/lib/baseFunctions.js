@@ -1,4 +1,4 @@
-import { functionRegistry } from "./functionRegistry.js"
+import { functionRegistry } from "./baseFunctionRegistry.js"
 
 /**
  * Reads the base function docs json file and returns its content as an object
@@ -26,7 +26,7 @@ function reflectFunctions(library, namespace, isPrototype = false) {
       //TODO: handle prototype calling
       let func = ({ instance, args }) => property.call(instance, ...args)
 
-      functionRegistry.addToRegistry(fullName, property, baseFunctionsDoc[fullName], true)
+      functionRegistry.addToRegistry(fullName, property, baseFunctionsDoc[fullName])
     }
   }
 }
@@ -56,8 +56,7 @@ functionRegistry.addToRegistry("Math.sum", {
       "number"
     ]
   }
-}
-)
+})
 
 
 console.log(functionRegistry)

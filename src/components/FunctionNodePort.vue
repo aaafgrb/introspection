@@ -1,29 +1,25 @@
 <template>
   <div class="port">
-    <span class="handle" :class="classObject" @click="(e) => mouseclick(e)" ref="handle"></span>
+    <span class="handle" :class="classObject" @click="mouseclick" ref="handle"></span>
     {{ label }}
   </div>
 </template>
 
 <script>
 import LeaderLine from 'leader-line-new';
-import { reactive, useTemplateRef } from 'vue';
+import { reactive, useTemplateRef, watch } from 'vue';
 
 export default {
   props: {
-    emitter: {
+    portId: {
+      type: Object,
       required: true
     },
-    isInput: {
-      type: Boolean,
+    cfData: {
       required: true
     },
     nodeData: {
       type: Object,
-      required: true
-    },
-    index: {
-      type: Number,
       required: true
     },
     label: {
@@ -31,15 +27,10 @@ export default {
       default: "default"  //change for more data later
     },
   },
-  mounted: () => {
-    if (this.nodeData.params[this.index].ref) {
-      console.log(this.nodeData.params[props.nodeData.params[props.index].ref], this.handleElement)
-      new LeaderLine(this.nodeData.params[props.nodeData.params[props.index].ref], this.handleElement)
-    }
-  },
   setup(props) {
     const handleElement = useTemplateRef("handle")
-    props.nodeData.params[props.index].handleElement = handleElement
+    props.cfData.getNodeHandle(props.portId.nodeName, props.portId.isInput, props.portId.portIndex).target = handleElement
+
     const classObject = reactive({
       "dragging": false,
       "being-dragged-target": false,
@@ -48,38 +39,41 @@ export default {
     })
 
     const mouseclick = function (event) {
-      props.emitter.emit("port_handle_click",
-        {
-          target: event.target,
-          isInput: props.isInput,
-          portIndex: props.index,
-          nodeName: props.nodeData.name,
-        }
-      )
+      props.cfData.portHandleClick(event, props.portId)
     }
 
-    props.emitter.on("start_connect", function (e) {
-      if (e.data.isInput == props.isInput) {
+    props.cfData.emitter.on("start_connect", function (hitPortId) {
+      if (hitPortId.isInput == props.portId.isInput) {
         classObject["wrong-io-type"] = true
-        classObject["being-dragged-target"] =
-          e.data.portIndex == props.index &&
-          e.data.nodeName == props.nodeData.name
+        classObject["being-dragged-target"] = hitPortId == props.portId
       } else {
         classObject["dragging"] = true
       }
-
     })
 
-    props.emitter.on("stop_connect", e => {
+    props.cfData.emitter.on("stop_connect", e => {
       for (let key in classObject) {
         classObject[key] = false
+      }
+    })
+
+    let leaderLine = null
+
+    props.cfData.emitter.on("connected", ({ fromId, toId, line }) => {
+      if (props.portId == fromId || props.portId == toId) {
+        leaderLine = line
+      }
+    })
+
+    watch(props.nodeData.position, () => {
+      if (leaderLine) {
+        leaderLine.position()
       }
     })
 
     return {
       mouseclick,
       classObject,
-      handleElement,
     };
   },
 }
@@ -94,7 +88,9 @@ export default {
   background-color: #ffffff;
   border: 1px solid #ddd;
   border-radius: 4px;
-  height: 20px;
+  min-height: 28px;
+  min-width: 50px;
+  height: 100%;
   font-size: 12px;
   position: relative;
 }

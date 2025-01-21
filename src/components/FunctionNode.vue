@@ -3,7 +3,7 @@
     <div class=" node-header" @mousedown.stop="onHeaderMouseDown">
       {{ nodeData.name }}
     </div>
-    <FunctionNodeContent :emitter="emitter" :inputs="[1, 2, 3]" :outputs="[1, 2]" :nodeData="nodeData" />
+    <FunctionNodeContent :cfData="cfData" :inputs="nodeData.params" :outputs="nodeData.output" :nodeData="nodeData" />
   </div>
 </template>
 
@@ -17,7 +17,7 @@ export default {
     FunctionNodeContent
   },
   props: {
-    emitter: {
+    cfData: {
       required: true
     },
     nodeData: {

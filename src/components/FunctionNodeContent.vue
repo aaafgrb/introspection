@@ -3,13 +3,13 @@
     <div class="ports-container">
       <!-- Input Ports -->
       <div class="ports inputs" :style="{ '--port-flex': calculateFlex(inputs.length) }">
-        <FunctionNodePort :emitter="emitter" :nodeData="nodeData" v-for="(input, index) in inputs" :is-input="true"
-          :index="index" :key="index" />
+        <FunctionNodePort :cfData="cfData" :nodeData="nodeData" v-for="(input, index) in inputs"
+          :port-id="{ nodeName: nodeData.name, isInput: true, portIndex: index }" :node-data="nodeData" />
       </div>
       <!-- Output Ports -->
       <div class="ports outputs" :style="{ '--port-flex': calculateFlex(outputs.length) }">
-        <FunctionNodePort :emitter="emitter" :nodeData="nodeData" v-for="(output, index) in outputs" :is-input="false"
-          :index="index" :key="index" />
+        <FunctionNodePort :cfData="cfData" :nodeData="nodeData" v-for="(output, index) in outputs"
+          :port-id="{ nodeName: nodeData.name, isInput: false, portIndex: index }" :node-data="nodeData" />
       </div>
     </div>
     <div class="node-controls">
@@ -27,7 +27,7 @@ export default {
     FunctionNodePort
   },
   props: {
-    emitter: {
+    cfData: {
       required: true
     },
     nodeData: {
@@ -73,7 +73,7 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   flex-grow: 1;
-  min-height: 80px;
+  min-height: 40px;
   gap: 0px;
 }
 

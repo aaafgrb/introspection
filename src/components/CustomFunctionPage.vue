@@ -14,9 +14,14 @@
     </div>
 
     <!-- Page Content (Hidden When Minimized) -->
-    <div v-show="!minimized" class="page-content" ref="pageContent">
+    <div v-show="!minimized" class="page-content" @contextmenu="onContextMenu">
       <DraggableBackground>
-        <CustomFunctionNodes :custom-function-name="customFunctionName" :emitter="emitter" />
+        //todo: viewonly | edit<br>
+        //todo: clean unused registry logic<br>
+        //todo: check prototype function arity<br>
+        //todo: proper leader line visual<br>
+        //todo: leader line unconnect<br>
+        <FunctionNode :cfData="cfData" v-for="[key, node] in cfData.state.nodes" :nodeData="node" :key="key" />
       </DraggableBackground>
     </div>
 
@@ -29,16 +34,14 @@
 <script>
 import { ref, useTemplateRef } from "vue";
 import { useDraggable } from "./useDraggable";
-import FunctionNode from "./FunctionNode.vue";
 import DraggableBackground from "./DraggableBackground.vue";
-import CustomFunctionNodes from "./CustomFunctionNodes.vue";
-import mitt from "mitt";
+import FunctionNode from "./FunctionNode.vue";
+import { useCustomFunction } from "./useCustomFunction";
 
 export default {
   components: {
     FunctionNode,
     DraggableBackground,
-    CustomFunctionNodes,
   },
   props: {
     id: {
@@ -55,21 +58,12 @@ export default {
     };
   },
   setup(props) {
+    const cfData = useCustomFunction(props.customFunctionName)
 
-    //emitter setup
-    const emitter = mitt();
-
-    //right click on content = cancel port connect setup
-    const pageContent = useTemplateRef("pageContent")
-    const cancelConnect = e => {
+    const onContextMenu = (e) => {
       e.preventDefault();
-      pageContent.value.removeEventListener("contextmenu", cancelConnect);
-      emitter.emit("stop_connect", null)
+      cfData.cancelConnect();
     }
-
-    emitter.on("start_connect", e => {
-      pageContent.value.addEventListener("contextmenu", cancelConnect);
-    })
 
     // Draggable page header
     const position = ref({ x: 100, y: 100 });
@@ -94,11 +88,12 @@ export default {
     });
 
     return {
-      emitter,
+      cfData,
       position,
       dimensions,
       onHeaderMouseDown,
       onResizeMouseDown,
+      onContextMenu,
     };
   },
   methods: {

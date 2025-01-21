@@ -20,10 +20,10 @@ export const useCustomFunctionStore = defineStore("customFunction", {
               {
                 "name": "out",
                 "operation": "Math.sum",
-                "params": [{ "ref": "in" }, { "val": 2 }],
+                "params": [{ "ref": "in", "out": 0 }, { "val": 2 }],
               },
             ],
-            "output": ["out"]
+            "output": [{ "ref": "out", "out": 0 }]
           }
         }
       ]]
