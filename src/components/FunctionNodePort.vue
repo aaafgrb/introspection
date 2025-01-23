@@ -6,10 +6,14 @@
 </template>
 
 <script>
-import LeaderLine from 'leader-line-new';
-import { reactive, useTemplateRef, watch } from 'vue';
+
+import { reactive, useTemplateRef, watch, ref } from 'vue';
+import ConnectionArrow from './ConnectionArrow.vue';
 
 export default {
+  components: {
+    ConnectionArrow
+  },
   props: {
     portId: {
       type: Object,
@@ -27,10 +31,31 @@ export default {
       default: "default"  //change for more data later
     },
   },
+  mounted() {
+    this.updatePortOffset()
+  },
   setup(props) {
     const handleElement = useTemplateRef("handle")
-    props.cfData.getNodeHandle(props.portId.nodeName, props.portId.isInput, props.portId.portIndex).target = handleElement
+    const p = props.cfData.getNodeHandle(props.portId.nodeName, props.portId.isInput, props.portId.portIndex)
+    // p.target = handleElement
+    // p.nodeData = props.nodeData
 
+    const offset = ref({ x: 0, y: 0 })
+    const updatePortOffset = () => {
+      let walk = handleElement.value
+
+      while (walk && !walk.classList.contains("function-node")) {
+        offset.value.x += walk.offsetLeft
+        offset.value.y += walk.offsetTop
+        walk = walk.parentElement
+      }
+      if (!walk) {
+        console.warn("Failed node port offset calculation. function-node class not found")
+        offset.value.x = 0;
+        offset.value.y = 0;
+      }
+      return offset.value
+    }
     const classObject = reactive({
       "dragging": false,
       "being-dragged-target": false,
@@ -39,7 +64,7 @@ export default {
     })
 
     const mouseclick = function (event) {
-      props.cfData.portHandleClick(event, props.portId)
+      props.cfData.portHandleClick(event, props.portId, offset, props.nodeData)
     }
 
     props.cfData.emitter.on("start_connect", function (hitPortId) {
@@ -57,23 +82,27 @@ export default {
       }
     })
 
-    let leaderLine = null
+    const currentLine = ref(null)
 
-    props.cfData.emitter.on("connected", ({ fromId, toId, line }) => {
-      if (props.portId == fromId || props.portId == toId) {
-        leaderLine = line
+    props.cfData.emitter.on("connected", (fromTo) => {
+      if (props.portId == fromTo.from.portId || props.portId == fromTo.to.portId) {
+        currentLine.value = fromTo
       }
     })
 
+    props.cfData.state.connections.get(props.portId)
     watch(props.nodeData.position, () => {
-      if (leaderLine) {
-        leaderLine.position()
+      if (currentLine.value && currentLine.value.update) {
+        currentLine.value.update()
       }
     })
 
     return {
       mouseclick,
       classObject,
+      currentLine,
+      updatePortOffset,
+      offset
     };
   },
 }

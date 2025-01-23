@@ -16,12 +16,9 @@
     <!-- Page Content (Hidden When Minimized) -->
     <div v-show="!minimized" class="page-content" @contextmenu="onContextMenu">
       <DraggableBackground>
-        //todo: viewonly | edit<br>
-        //todo: clean unused registry logic<br>
-        //todo: check prototype function arity<br>
-        //todo: proper leader line visual<br>
-        //todo: leader line unconnect<br>
         <FunctionNode :cfData="cfData" v-for="[key, node] in cfData.state.nodes" :nodeData="node" :key="key" />
+        <ConnectionArrow v-for="[key, fromTo] in cfData.state.connections" color="red" :width="4" tail head
+          :fromTo="fromTo" />
       </DraggableBackground>
     </div>
 
@@ -29,7 +26,16 @@
     <div v-show="!minimized" class="resize-handle" @mousedown="onResizeMouseDown"></div>
   </div>
 </template>
-
+<!-- //todo: viewonly | edit<br>
+//todo: clean unused registry logic<br>
+//todo: check prototype function arity<br>
+//todo: proper leader line visual<br>
+//todo: leader line unconnect<br>
+//todo: store connections logic (not only leader line) for the node resolving<br>
+//todo: put an svg on exactly on top of the background and chnage its viewbox attribute when the background
+position changes and change its size when its resized (maybe it could even be made in the background component?)
+<br>
+//todo: for the arrows do the same thing as the previous one? -->
 
 <script>
 import { ref, useTemplateRef } from "vue";
@@ -37,11 +43,13 @@ import { useDraggable } from "./useDraggable";
 import DraggableBackground from "./DraggableBackground.vue";
 import FunctionNode from "./FunctionNode.vue";
 import { useCustomFunction } from "./useCustomFunction";
+import ConnectionArrow from "./ConnectionArrow.vue";
 
 export default {
   components: {
     FunctionNode,
     DraggableBackground,
+    ConnectionArrow
   },
   props: {
     id: {

@@ -3,7 +3,6 @@ import { solveMiddleVariable } from "@/lib/customFunctions";
 import mitt from "mitt";
 import { useCustomFunctionStore } from "@/stores/customFunctionStore";
 import { getFunctionArity } from "@/lib/functionRegistry";
-import LeaderLine from "leader-line-new";
 
 /**
  * Composable to manage a custom function instance
@@ -26,6 +25,7 @@ export function useCustomFunction(customFunctionName) {
   const emitter = mitt()
   const state = reactive({
     nodes: new Map(),
+    connections: new Map(),
     resolvedValues: new Map(), // Cache for resolved node outputs
   });
 
@@ -79,29 +79,30 @@ export function useCustomFunction(customFunctionName) {
 
   let connectingNode = null;
 
-  const startConnect = (event, portId) => {
-    connectingNode = { target: event.target, portId }
+  const startConnect = (event, portId, portOffset, nodeData) => {
+    connectingNode = { target: event.target, portId, portOffset, nodeData }
     emitter.emit("start_connect", portId)
   }
 
-  const endConnect = (event, portId) => {
+  const endConnect = (event, portId, portOffset, nodeData) => {
     console.log("connected", connectingNode.portId, portId)
-
+    console.log(state.nodes)
     const fromTo = portId.isInput
-      ? { from: connectingNode, to: { target: event.target, portId } }
-      : { from: connectingNode, to: { target: event.target, portId } }
-    const line = new LeaderLine(fromTo.from.target, fromTo.to.target)
-    emitter.emit("connected", { fromId: fromTo.from.portId, toId: fromTo.to.portId, line })
+      ? { from: connectingNode, to: { target: event.target, portId, portOffset, nodeData } }
+      : { from: { target: event.target, portId, portOffset, nodeData }, to: connectingNode }
+    emitter.emit("connected", fromTo)
+
+    state.connections.set(fromTo.to.portId, fromTo)
     connectingNode = null;
     emitter.emit("stop_connect", null)
   }
 
   //public
-  const portHandleClick = (event, portId) => {
+  const portHandleClick = (event, portId, portOffset, nodeData) => {
     if (!connectingNode) {
-      startConnect(event, portId);
+      startConnect(event, portId, portOffset, nodeData);
     } else {
-      endConnect(event, portId);
+      endConnect(event, portId, portOffset, nodeData);
     }
   }
 
@@ -147,8 +148,4 @@ export function useCustomFunction(customFunctionName) {
     portHandleClick,
     getNodeHandle,
   };
-}
-
-class Node {
-  //constructor()
 }

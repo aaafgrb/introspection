@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 import { useDraggable } from "./useDraggable";
 import FunctionNodeContent from "./FunctionNodeContent.vue";
 
@@ -31,6 +31,7 @@ export default {
   },
   mounted() {
     this.position = this.nodeData.position ?? { x: 100, y: 100 }
+    this.nodeData.target = useTemplateRef("node")
   },
   setup() {
     const position = ref({ x: 0, y: 0 });
