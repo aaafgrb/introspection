@@ -14,19 +14,22 @@ import { ref, useTemplateRef } from 'vue';
 
 export default {
   props: {
-    fromTo: {
+    from: {
       type: Object,
       required: true,
     },
-    color: {
-      type: String,
-      default: 'black',
-    },
+    to: {
+      type: Object,
+      required: true,
+    }
   },
   mounted() {
-    this.fromTo.update = this.updateLine
     this.updateLine();
   },
+  updated() {
+    this.updateLine();
+  },
+  expose: ['updateLine'],
   setup(props) {
     const line = useTemplateRef("line")
     const needSwap = ref(false);
@@ -34,16 +37,14 @@ export default {
     const updateLine = () => {
       var W = 2;
 
-      const fromElement = props.fromTo.from.target
-      const toElement = props.fromTo.to.target
-      var fromBStartY = props.fromTo.from.nodeData.position.y + props.fromTo.from.portOffset.y
-      var fromBStartX = props.fromTo.from.nodeData.position.x + props.fromTo.from.portOffset.x
-      var toBStartY = props.fromTo.to.nodeData.position.y + props.fromTo.to.portOffset.y
-      var toBStartX = props.fromTo.to.nodeData.position.x + props.fromTo.to.portOffset.x
-      var fromBWidth = fromElement.offsetWidth
-      var fromBHeight = fromElement.offsetHeight
-      var toBWidth = toElement.offsetWidth
-      var toBHeight = toElement.offsetHeight
+      var fromBStartY = props.from.nodePosition.y + props.from.portOffset.y
+      var fromBStartX = props.from.nodePosition.x + props.from.portOffset.x
+      var toBStartY = props.to.nodePosition.y + props.to.portOffset.y
+      var toBStartX = props.to.nodePosition.x + props.to.portOffset.x
+      var fromBWidth = props.from.width
+      var fromBHeight = props.from.height
+      var toBWidth = props.to.width
+      var toBHeight = props.to.height
 
       var fT = fromBStartY + fromBHeight * 0.5
       var tT = toBStartY + toBHeight * 0.5
@@ -76,7 +77,7 @@ export default {
 
     return {
       updateLine,
-      needSwap
+      needSwap,
     }
   }
 };
@@ -91,6 +92,7 @@ export default {
   border-bottom: 6px solid transparent;
   border-top: 6px solid transparent;
   background-clip: border-box;
+  pointer-events: none;
 }
 
 .line .arrow-bw {
@@ -108,6 +110,7 @@ export default {
   top: 100%;
   left: 50%;
   transform: translate(-50%, -100%);
+  pointer-events: none;
 }
 
 .line {
@@ -116,5 +119,7 @@ export default {
   z-index: 1;
   background-color: rgba(0, 0, 0, 0.6);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  pointer-events: none;
 }
 </style>

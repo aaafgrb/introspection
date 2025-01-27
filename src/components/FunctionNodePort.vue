@@ -3,6 +3,9 @@
     <span class="handle" :class="classObject" @click="mouseclick" ref="handle"></span>
     {{ label }}
   </div>
+  <Teleport v-if="portId.isInput && from && to && cfData.connectionsArea.value" :to="cfData.connectionsArea.value">
+    <ConnectionArrow ref="connectionArrow" :from="from" :to="to" />
+  </Teleport>
 </template>
 
 <script>
@@ -32,15 +35,29 @@ export default {
     },
   },
   mounted() {
-    this.updatePortOffset()
+    if (this.portId.isInput) {
+      this.nodeData.params[this.portId.portIndex].offset = this.updatePortOffset()
+      let o = this.nodeData.params[this.portId.portIndex]
+      if (o.ref) {
+        this.addConnection({ nodeName: o.ref, portIndex: o.out })
+        //todo: insert on the nodeData when a connection is added too (and maybe unify the names of the nodeName and portIndex with the documentation)
+      }
+      this.to = {
+        width: this.handleElement.offsetWidth,
+        height: this.handleElement.offsetHeight,
+        portOffset: this.offset,
+        nodePosition: this.nodeData.position
+      }
+    } else {
+      this.nodeData.output[this.portId.portIndex].offset = this.updatePortOffset()
+    }
+
   },
+  expose: ['updateConnections'],
   setup(props) {
     const handleElement = useTemplateRef("handle")
-    const p = props.cfData.getNodeHandle(props.portId.nodeName, props.portId.isInput, props.portId.portIndex)
-    // p.target = handleElement
-    // p.nodeData = props.nodeData
-
     const offset = ref({ x: 0, y: 0 })
+
     const updatePortOffset = () => {
       let walk = handleElement.value
 
@@ -56,6 +73,49 @@ export default {
       }
       return offset.value
     }
+
+    const currentOutPortId = ref(null)
+    const connectionArrow = props.portId.isInput ? useTemplateRef("connectionArrow") : null
+    const from = ref(null)
+    const to = ref(null)
+
+    const updateConnections = props.portId.isInput ?
+      () => { if (connectionArrow.value) connectionArrow.value.updateLine() } :
+      () => { props.nodeData.output.forEach(e => e.to.forEach(x => { if (x.func) x.func() })) }
+
+    const addConnection = (fromId) => {
+      currentOutPortId.value = fromId
+      let n = props.cfData.state.nodes.get(fromId.nodeName)
+      let o = n.output[fromId.portIndex]
+      o.to.push({ nodeName: props.portId.nodeName, portIndex: props.portId.portIndex, func: updateConnections })
+      from.value = {
+        //assuming the port handle of the output is the same size as this handle
+        width: handleElement.value.offsetWidth,
+        height: handleElement.value.offsetHeight,
+        portOffset: o.offset,
+        nodePosition: n.position
+      }
+    }
+
+    //input ports only
+    if (props.portId.isInput) {
+      props.cfData.emitter.on("connected", (fromTo) => {
+        if (props.portId == fromTo.toId) {
+          addConnection(fromTo.fromId)
+        }
+      })
+
+      props.cfData.emitter.on("disconnect", (toId) => {
+        if (toId.nodeName == props.portId.nodeName && toId.portIndex == props.portId.portIndex) {
+          currentLine.value = null
+          from.value = null
+        }
+      })
+
+    }
+
+    //-----------------------connection css----------------------------
+
     const classObject = reactive({
       "dragging": false,
       "being-dragged-target": false,
@@ -64,7 +124,7 @@ export default {
     })
 
     const mouseclick = function (event) {
-      props.cfData.portHandleClick(event, props.portId, offset, props.nodeData)
+      props.cfData.portHandleClick(props.portId)
     }
 
     props.cfData.emitter.on("start_connect", function (hitPortId) {
@@ -82,27 +142,18 @@ export default {
       }
     })
 
-    const currentLine = ref(null)
-
-    props.cfData.emitter.on("connected", (fromTo) => {
-      if (props.portId == fromTo.from.portId || props.portId == fromTo.to.portId) {
-        currentLine.value = fromTo
-      }
-    })
-
-    props.cfData.state.connections.get(props.portId)
-    watch(props.nodeData.position, () => {
-      if (currentLine.value && currentLine.value.update) {
-        currentLine.value.update()
-      }
-    })
+    //----------------------------------------
 
     return {
       mouseclick,
       classObject,
-      currentLine,
+      currentOutPortId,
       updatePortOffset,
-      offset
+      offset,
+      updateConnections,
+      from, to,
+      handleElement,
+      addConnection
     };
   },
 }

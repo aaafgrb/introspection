@@ -41,8 +41,9 @@ export function useCustomFunction(customFunctionName) {
           operation: "input",
           params: [{ "val": index }],
           position: { x: 50, y: 100 + 150 * index },
-          output: [{}],
+          output: [{ to: [] }],
           target: null,
+          updateConnectionFuncs: [],
         })
     })
 
@@ -57,8 +58,9 @@ export function useCustomFunction(customFunctionName) {
           operation: def.operation,
           params: structuredClone(toRaw(def.params)),
           position: { x: 300 + 250 * index, y: 100 },
-          output: new Array(getFunctionArity(def.operation)).fill({}),
+          output: new Array(getFunctionArity(def.operation)).fill({ to: [] }),
           target: null,
+          updateConnectionFuncs: [],
         })
     })
 
@@ -66,7 +68,7 @@ export function useCustomFunction(customFunctionName) {
     if (def.params) {
       def.params.forEach((p, i) => {
         if (p.ref) {
-          state.nodes.get(def.name).params[i].from = { nodeName: p.ref, portIndex: p.out }
+          state.nodes.get(p.ref).output[p.out].to.push({ nodeName: def.name, portIndex: i })
         }
       })
     }
@@ -77,29 +79,48 @@ export function useCustomFunction(customFunctionName) {
   //---------------PORT CONNECTION------------------//
   //------------------------------------------------//
 
-  let connectingNode = null;
+  let connectingNodeId = null;
 
-  const startConnect = (event, portId, portOffset, nodeData) => {
-    connectingNode = { target: event.target, portId, portOffset, nodeData }
+  const startConnect = (portId) => {
+    connectingNodeId = portId
     emitter.emit("start_connect", portId)
   }
 
-  const endConnect = (event, portId, portOffset, nodeData) => {
-    console.log("connected", connectingNode.portId, portId)
-    console.log(state.nodes)
+  const endConnect = (portId) => {
+    console.log("connected", connectingNodeId, portId)
     const fromTo = portId.isInput
-      ? { from: connectingNode, to: { target: event.target, portId, portOffset, nodeData } }
-      : { from: { target: event.target, portId, portOffset, nodeData }, to: connectingNode }
-    emitter.emit("connected", fromTo)
+      ? { fromId: connectingNodeId, toId: portId }
+      : { fromId: portId, toId: connectingNodeId }
 
-    state.connections.set(fromTo.to.portId, fromTo)
-    connectingNode = null;
+    // let c = state.connections.get(fromTo.to.portId)
+    // if (c) {
+    //   emitter.emit("disconnect", c)
+    // }
+
+    // let d = state.nodes.get(fromTo.to.portId.nodeName).params[fromTo.to.portId.portIndex]
+    // if (d.ref) {
+    //   state.nodes.get(d.ref).to.filter(x =>
+    //     x.ref != fromTo.to.portId.nodeName && x.out != fromTo.to.portId.portIndex)
+    //   emitter.emit("disconnect", null)
+    // }
+    // //d.from = { nodeName: fromTo.from.portId.nodeName, portIndex: fromTo.from.portId.portIndex }
+    // d.ref = fromTo.from.portId.nodeName
+    // d.out = fromTo.from.portId.portIndex
+
+    // state.nodes.get(fromTo.from.portId.nodeName).output[fromTo.from.portId.portIndex].to.push(
+    //   { nodeName: fromTo.to.portId.nodeName, portIndex: fromTo.to.portId.portIndex })
+
+    // console.log(state.nodes)
+
+    // state.connections.set(fromTo.to.portId, fromTo)
+    emitter.emit("connected", fromTo)
+    connectingNodeId = null;
     emitter.emit("stop_connect", null)
   }
 
   //public
   const portHandleClick = (event, portId, portOffset, nodeData) => {
-    if (!connectingNode) {
+    if (!connectingNodeId) {
       startConnect(event, portId, portOffset, nodeData);
     } else {
       endConnect(event, portId, portOffset, nodeData);
@@ -108,6 +129,7 @@ export function useCustomFunction(customFunctionName) {
 
   //public
   const cancelConnect = e => {
+    connectingNodeId = null;
     emitter.emit("stop_connect", null)
   }
 
@@ -116,6 +138,20 @@ export function useCustomFunction(customFunctionName) {
     return isInput
       ? state.nodes.get(nodeName).params[portIndex]
       : state.nodes.get(nodeName).output[portIndex]
+  }
+
+  //public
+  const addToUpdateList = (nodeName, func) => {
+    //state.nodes.get(nodeName).updateConnectionFuncs.push(func)
+  }
+
+  //public
+  const removeFromUpdateList = (nodeName, func) => {
+    // let array = state.nodes.get(nodeName).updateConnectionFuncs
+    // const index = array.indexOf(func);
+    // if (index > -1) {
+    //   array.splice(index, 1);
+    // }
   }
 
   //------------------------------------------------//
@@ -147,5 +183,7 @@ export function useCustomFunction(customFunctionName) {
     cancelConnect,
     portHandleClick,
     getNodeHandle,
+    addToUpdateList,
+    removeFromUpdateList,
   };
 }
