@@ -40,7 +40,6 @@ export default {
       let o = this.nodeData.params[this.portId.portIndex]
       if (o.ref) {
         this.addConnection({ nodeName: o.ref, portIndex: o.out })
-        //todo: insert on the nodeData when a connection is added too (and maybe unify the names of the nodeName and portIndex with the documentation)
       }
       this.to = {
         width: this.handleElement.offsetWidth,
@@ -83,7 +82,19 @@ export default {
       () => { if (connectionArrow.value) connectionArrow.value.updateLine() } :
       () => { props.nodeData.output.forEach(e => e.to.forEach(x => { if (x.func) x.func() })) }
 
+    const removeConnection = () => {
+      const n = props.cfData.state.nodes.get(currentOutPortId.value.nodeName).output[currentOutPortId.value.portIndex]
+      let index = n.to.findIndex(x => x.nodeName == props.portId.nodeName && x.portIndex == props.portId.portIndex)
+      if (index > -1) n.to.splice(index, 1)
+
+      currentOutPortId.value = null
+      from.value = null
+    }
+
     const addConnection = (fromId) => {
+      if (currentOutPortId.value) {
+        removeConnection()
+      }
       currentOutPortId.value = fromId
       let n = props.cfData.state.nodes.get(fromId.nodeName)
       let o = n.output[fromId.portIndex]
@@ -107,11 +118,14 @@ export default {
 
       props.cfData.emitter.on("disconnect", (toId) => {
         if (toId.nodeName == props.portId.nodeName && toId.portIndex == props.portId.portIndex) {
-          currentLine.value = null
-          from.value = null
+          removeConnection()
         }
       })
 
+    }
+
+    const mouseclick = function (event) {
+      props.cfData.portHandleClick(props.portId)
     }
 
     //-----------------------connection css----------------------------
@@ -122,10 +136,6 @@ export default {
       "wrong-io-type": false,
       "wrong-data-type": false,
     })
-
-    const mouseclick = function (event) {
-      props.cfData.portHandleClick(props.portId)
-    }
 
     props.cfData.emitter.on("start_connect", function (hitPortId) {
       if (hitPortId.isInput == props.portId.isInput) {

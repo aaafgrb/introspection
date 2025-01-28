@@ -27,11 +27,7 @@
 </template>
 <!-- //todo: viewonly | edit<br>
 //todo: clean unused registry logic<br>
-//todo: store connections logic (not only leader line) for the node resolving<br>
-//todo: put an svg on exactly on top of the background and chnage its viewbox attribute when the background
-position changes and change its size when its resized (maybe it could even be made in the background component?)
-<br>
-//todo: for the arrows do the same thing as the previous one? -->
+-->
 
 <script>
 import { ref, computed, useTemplateRef } from "vue";
@@ -54,18 +50,6 @@ export default {
     customFunctionName: {
       type: String,
       required: true,
-    }
-  },
-  computed: {
-    connections() {
-      return Array.from(this.cfData.state.nodes, ([key, value]) =>
-        value.params
-          .filter(x => x.ref)
-          .map((x, index) => ({
-            from: x,
-            to: { nodeName: key, portIndex: index }
-          }))
-      ).flat()
     }
   },
   data() {

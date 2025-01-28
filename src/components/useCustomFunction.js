@@ -25,7 +25,6 @@ export function useCustomFunction(customFunctionName) {
   const emitter = mitt()
   const state = reactive({
     nodes: new Map(),
-    connections: new Map(),
     resolvedValues: new Map(), // Cache for resolved node outputs
   });
 
@@ -42,8 +41,6 @@ export function useCustomFunction(customFunctionName) {
           params: [{ "val": index }],
           position: { x: 50, y: 100 + 150 * index },
           output: [{ to: [] }],
-          target: null,
-          updateConnectionFuncs: [],
         })
     })
 
@@ -59,20 +56,8 @@ export function useCustomFunction(customFunctionName) {
           params: structuredClone(toRaw(def.params)),
           position: { x: 300 + 250 * index, y: 100 },
           output: new Array(getFunctionArity(def.operation)).fill({ to: [] }),
-          target: null,
-          updateConnectionFuncs: [],
         })
     })
-
-  state.nodes.forEach(def => {
-    if (def.params) {
-      def.params.forEach((p, i) => {
-        if (p.ref) {
-          state.nodes.get(p.ref).output[p.out].to.push({ nodeName: def.name, portIndex: i })
-        }
-      })
-    }
-  })
   console.log(state)
 
   //------------------------------------------------//
@@ -87,43 +72,26 @@ export function useCustomFunction(customFunctionName) {
   }
 
   const endConnect = (portId) => {
-    console.log("connected", connectingNodeId, portId)
-    const fromTo = portId.isInput
-      ? { fromId: connectingNodeId, toId: portId }
-      : { fromId: portId, toId: connectingNodeId }
+    if (portId == connectingNodeId && portId.isInput) {
+      emitter.emit("disconnect", portId)
+    } else if (portId.isInput != connectingNodeId.isInput) {
+      console.log("connected", connectingNodeId, portId)
+      const fromTo = portId.isInput
+        ? { fromId: connectingNodeId, toId: portId }
+        : { fromId: portId, toId: connectingNodeId }
 
-    // let c = state.connections.get(fromTo.to.portId)
-    // if (c) {
-    //   emitter.emit("disconnect", c)
-    // }
-
-    // let d = state.nodes.get(fromTo.to.portId.nodeName).params[fromTo.to.portId.portIndex]
-    // if (d.ref) {
-    //   state.nodes.get(d.ref).to.filter(x =>
-    //     x.ref != fromTo.to.portId.nodeName && x.out != fromTo.to.portId.portIndex)
-    //   emitter.emit("disconnect", null)
-    // }
-    // //d.from = { nodeName: fromTo.from.portId.nodeName, portIndex: fromTo.from.portId.portIndex }
-    // d.ref = fromTo.from.portId.nodeName
-    // d.out = fromTo.from.portId.portIndex
-
-    // state.nodes.get(fromTo.from.portId.nodeName).output[fromTo.from.portId.portIndex].to.push(
-    //   { nodeName: fromTo.to.portId.nodeName, portIndex: fromTo.to.portId.portIndex })
-
-    // console.log(state.nodes)
-
-    // state.connections.set(fromTo.to.portId, fromTo)
-    emitter.emit("connected", fromTo)
+      emitter.emit("connected", fromTo)
+    }
     connectingNodeId = null;
     emitter.emit("stop_connect", null)
   }
 
   //public
-  const portHandleClick = (event, portId, portOffset, nodeData) => {
+  const portHandleClick = (portId) => {
     if (!connectingNodeId) {
-      startConnect(event, portId, portOffset, nodeData);
+      startConnect(portId);
     } else {
-      endConnect(event, portId, portOffset, nodeData);
+      endConnect(portId);
     }
   }
 
@@ -133,38 +101,13 @@ export function useCustomFunction(customFunctionName) {
     emitter.emit("stop_connect", null)
   }
 
-  //public
-  const getNodeHandle = (nodeName, isInput, portIndex) => {
-    return isInput
-      ? state.nodes.get(nodeName).params[portIndex]
-      : state.nodes.get(nodeName).output[portIndex]
-  }
-
-  //public
-  const addToUpdateList = (nodeName, func) => {
-    //state.nodes.get(nodeName).updateConnectionFuncs.push(func)
-  }
-
-  //public
-  const removeFromUpdateList = (nodeName, func) => {
-    // let array = state.nodes.get(nodeName).updateConnectionFuncs
-    // const index = array.indexOf(func);
-    // if (index > -1) {
-    //   array.splice(index, 1);
-    // }
-  }
 
   //------------------------------------------------//
   //----------------NODE SOLVING--------------------//
   //------------------------------------------------//
 
   // Resolve a node's output lazily
-  const resolveNode = (nodeName) => solveMiddleVariable(nodeName, customFunctionDefinition.definition.middle, state.resolvedValues);
-
-  const addConnection = (fromData, toData) => {
-    console.log(customFunctionDefinition)
-    //customFunctionDefinitionInstance.definition.middle.
-  }
+  //const resolveNode = (nodeName) => solveMiddleVariable(nodeName, customFunctionDefinition.definition.middle, state.resolvedValues);
 
   // Watch for changes in the definition to update state reactively
   // watch(
@@ -178,12 +121,7 @@ export function useCustomFunction(customFunctionName) {
   return {
     state,
     emitter,
-    resolveNode,
-    addConnection,
     cancelConnect,
     portHandleClick,
-    getNodeHandle,
-    addToUpdateList,
-    removeFromUpdateList,
   };
 }

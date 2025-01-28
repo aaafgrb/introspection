@@ -117,7 +117,7 @@ export default {
   position: absolute;
   height: 2px;
   z-index: 1;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.4);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   border-radius: 2px;
   pointer-events: none;

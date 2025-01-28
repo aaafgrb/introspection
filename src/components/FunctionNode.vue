@@ -1,5 +1,5 @@
 <template>
-  <div class="function-node" :style="{ top: `${position.y}px`, left: `${position.x}px` }" ref="node" @mousedown.stop="">
+  <div class="function-node" :style="{ top: `${position.y}px`, left: `${position.x}px` }" @mousedown.stop="">
     <!-- header -->
     <div class=" node-header" @mousedown.stop="onHeaderMouseDown">
       {{ nodeData.name }}
@@ -48,7 +48,6 @@ export default {
   },
   mounted() {
     this.position = this.nodeData.position ?? { x: 100, y: 100 }
-    this.nodeData.target = useTemplateRef("node")
   },
   setup(props) {
     const position = ref({ x: 0, y: 0 });
