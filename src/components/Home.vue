@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100vh; ">
+  <div style="height: 100vh;">
     <DraggableBackground>
       <CustomFunctionPage :custom-function-name="`test`" :id="0" />
     </DraggableBackground>
@@ -21,3 +21,9 @@ export default {
   },
 };
 </script>
+
+<style>
+body {
+  overflow: hidden;
+}
+</style>

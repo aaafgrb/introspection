@@ -1,122 +1,211 @@
 <template>
-  <div class="global-sidebar">
-    <section>
-      <h3>Function List</h3>
-      <div>
-        <select v-model="groupingOption" @change="groupFunctions">
-          <option value="type">Group by Type</option>
-          <option value="namespace">Group by Namespace</option>
-        </select>
-        <ul>
-          <li v-for="group in groupedFunctions" :key="group.name">
-            <strong>{{ group.name }}</strong>
-            <ul>
-              <li v-for="func in group.functions" :key="func.name">
-                {{ func.name }}
-                <button @click="openFunction(func)">Open</button>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </section>
-    <section>
-      <h3>Unsaved Custom Functions</h3>
-      <ul>
-        <li v-for="func in unsavedFunctions" :key="func.name">
-          {{ func.name }}
-          <button @click="openFunction(func)">Open</button>
+  <div :class="['sidebar', { 'is-retracted': isRetracted }]">
+    <div class="sidebar-handle" @click="toggleSidebar">
+      <span v-if="!isRetracted">☰</span>
+      <span v-else>≡</span>
+    </div>
+    <div class="sidebar-header">
+      <span v-if="!isRetracted">Sidebar Header</span>
+    </div>
+    <div class="sidebar-content">
+      <ul class="sidebar-list">
+        <!-- global commands -->
+        <li v-for="(item, index) in items" :class="['sidebar-item', { 'is-collapsed': item.collapsed }]"
+          ref="item-refs">
+          <div class="sidebar-item-header" @click="toggleItem(index)">
+            <span v-if="!isRetracted">{{ item.header }}</span>
+          </div>
+          <div class="sidebar-item-content">
+            <component :is="item.component"></component>
+          </div>
         </li>
       </ul>
-    </section>
-    <section>
-      <h3>Custom Functions Created This Session</h3>
-      <ul>
-        <li v-for="func in sessionFunctions" :key="func.name">
-          {{ func.name }}
-          <button @click="openFunction(func)">Open</button>
-        </li>
-      </ul>
-    </section>
+    </div>
   </div>
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { useTemplateRef } from 'vue';
+import GlobalCommands from './GlobalCommands.vue';
+
+
 
 export default {
-  props: {
-    baseFunctions: Array, // List of base functions
-    customFunctions: Array, // List of custom functions
-    unsavedFunctions: Array, // List of unsaved custom functions
-    sessionFunctions: Array, // List of custom functions created in the session
-  },
-  setup(props) {
-    const groupingOption = ref("type");
-
-    const groupedFunctions = computed(() => {
-      if (groupingOption.value === "type") {
-        return [
-          { name: "Base Functions", functions: props.baseFunctions },
-          { name: "Custom Functions", functions: props.customFunctions },
-        ];
-      } else if (groupingOption.value === "namespace") {
-        // Example of grouping by namespace
-        return props.customFunctions.reduce((groups, func) => {
-          const namespace = func.namespace || "Default";
-          let group = groups.find((g) => g.name === namespace);
-          if (!group) {
-            group = { name: namespace, functions: [] };
-            groups.push(group);
-          }
-          group.functions.push(func);
-          return groups;
-        }, []);
-      }
-      return [];
-    });
-
-    const openFunction = (func) => {
-      console.log("Opening function:", func.name); // Replace with actual open logic
-    };
-
+  components: { GlobalCommands },
+  data() {
     return {
-      groupingOption,
-      groupedFunctions,
-      openFunction,
+      isRetracted: false,
+      items: [
+        { header: 'Item 1', component: "GlobalCommands", collapsed: false },
+        { header: 'Item 2', component: "GlobalCommands", collapsed: false },
+        { header: 'Item 3', component: "GlobalCommands", collapsed: false },
+        { header: 'Item 4', component: "GlobalCommands", collapsed: false },
+        { header: 'Item 5', component: "GlobalCommands", collapsed: false },
+        { header: 'Item 6', component: "GlobalCommands", collapsed: false },
+        { header: 'Item 7', component: "GlobalCommands", collapsed: false },
+        { header: 'Item 8', component: "GlobalCommands", collapsed: false },
+        { header: 'Item 9', component: "GlobalCommands", collapsed: false },
+        { header: 'Item 10', component: "GlobalCommands", collapsed: false },
+        { header: 'Item 11', component: "GlobalCommands", collapsed: false },
+      ],
     };
+  },
+  setup() {
+    const itemRefs = useTemplateRef("item-refs")
+    return {
+      itemRefs
+    }
+  },
+  methods: {
+    toggleSidebar() {
+      this.isRetracted = !this.isRetracted;
+    },
+    toggleItem(index) {
+      if (this.isRetracted) {
+        this.isRetracted = false
+        this.items[index].collapsed = false
+        setTimeout(_ => {
+          this.itemRefs[index].scrollIntoView({ behavior: "smooth", block: "start" })
+          console.log("asd")
+        }, 200)
+      } else {
+        this.items[index].collapsed = !this.items[index].collapsed;
+      }
+    },
   },
 };
 </script>
-
 <style scoped>
-.global-sidebar {
-  width: 300px;
-  background-color: #f4f4f4;
-  border-right: 1px solid #ddd;
-  height: 100%;
-  padding: 10px;
-  overflow-y: auto;
+.sidebar {
+  width: 250px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: #f7faff;
+  color: #333;
+  transition: width 0.3s ease;
+  z-index: 10;
+  border-left: 2px solid #007bff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
 }
 
-.global-sidebar h3 {
-  margin-top: 20px;
-  font-size: 1.2em;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 5px;
+.is-retracted {
+  width: 50px;
 }
 
-.global-sidebar ul {
+.sidebar-handle {
+  width: 50px;
+  height: 30px;
+  background-color: #007bff;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  top: 20px;
+  user-select: none;
+  color: white;
+  z-index: 2;
+}
+
+.sidebar-header {
+  background-color: #e0f4ff;
+  color: #333;
+  padding-right: 50px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  border-bottom: 2px solid #007bff;
+  position: absolute;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: top 0.3s ease;
+  user-select: none;
+}
+
+.sidebar-content {
+  flex-grow: 1;
+  overflow: scroll;
+  margin-top: 50px;
+  transition: all 0.3s ease;
+}
+
+.sidebar-list {
   list-style: none;
-  padding: 0;
-  margin: 10px 0;
+  padding: 5px;
+  margin: 5px;
 }
 
-.global-sidebar li {
-  margin: 5px 0;
+.sidebar-item {
+  margin-bottom: 10px;
+  background-color: #e0f4ff;
+  border-radius: 15px;
+  transition: all 0.3s ease;
 }
 
-.global-sidebar button {
-  margin-left: 10px;
+.is-retracted .sidebar-item {
+  border-radius: 5px;
+  background-color: #007bff;
+  height: 15px;
+}
+
+.is-retracted .sidebar-item:hover {
+  scale: 1.1
+}
+
+.sidebar-item-header {
+  user-select: none;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  transition: background-color 0.3s;
+}
+
+.sidebar-item-header:hover {
+  background-color: #1284ff;
+}
+
+.is-retracted .sidebar-item-header {
+  border-radius: 5px !important;
+  background-color: #007bff;
+}
+
+.is-collapsed .sidebar-item-header {
+  border-radius: 8px;
+}
+
+
+.sidebar-item-content {
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  padding: 10px;
+  background-color: #e0e8ff;
+  transition: all 0.3s ease;
+}
+
+.is-retracted .sidebar-item-content {
+  height: 0px;
+  padding: 0px;
+  overflow: hidden;
+}
+
+.is-collapsed .sidebar-item-content {
+  height: 0px;
+  padding: 0px;
+  overflow: hidden;
 }
 </style>
