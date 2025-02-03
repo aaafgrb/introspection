@@ -1,7 +1,7 @@
 <template>
   <div class="function-page-list">
     <div v-for="(page, index) in sidebarStore.openPages" :key="page.id" class="function-page-item"
-      @click="sidebarStore.focusFunctionPage(page.id)" @contextmenu="event => contextMenu(event, index)">
+      @click="sidebarStore.focusFunctionPage(index)" @contextmenu="event => contextMenu(event, index)">
       <span class="function-name">{{ page.name }}</span>
     </div>
 
@@ -26,7 +26,7 @@ export default {
     const openContextMenu = inject("openContextMenu")
     const contextMenu = (event, index) => {
       openContextMenu(event, [
-        { label: "Focus on", callback: () => { console.log("option 1") } },
+        { label: "Focus on", callback: () => { sidebarStore.focusFunctionPage(index) } },
         { label: "Reset position", callback: () => { sidebarStore.resetFunctionPagePosition(index) } },
         { label: "Delete", callback: () => { sidebarStore.closeFunctionPage(index) } },
       ])

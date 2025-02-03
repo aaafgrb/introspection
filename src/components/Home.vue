@@ -3,6 +3,7 @@
     <DraggableBackground ref="draggable-background">
       <CustomFunctionPage v-for="page in sidebarStore.openPages" :key="page.id"
         :custom-function-name="page.customFunctionName" :id="page.id" :startPosition="page.position" :name="page.name"
+        :zIndex="page.zIndex" @interacted-with="sidebarStore.pageInteractedWithCallback(page.id)"
         ref="custom-function-pages" />
     </DraggableBackground>
   </div>

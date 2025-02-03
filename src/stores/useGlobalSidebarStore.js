@@ -8,6 +8,7 @@ const state = reactive({
 });
 let customFunctionPagesTemplate = null
 let draggableBackgroundTemplate = null
+let lastInteractedPageId = -1
 
 export function useGlobalSidebarStore() {
   return {
@@ -26,15 +27,18 @@ export function useGlobalSidebarStore() {
       const startX = state.defaultStartX + id * state.positionOffset;
       const startY = state.defaultStartY + id * state.positionOffset;
 
-      state.openPages.push({ id, name: `New Function ${id + 1}`, position: { x: startX, y: startY }, customFunctionName: "test" });
+      state.openPages.push({ id, name: `New Function ${id + 1}`, position: { x: startX, y: startY }, customFunctionName: "test", zIndex: 0 });
     },
 
     closeFunctionPage(index) {
       state.openPages.splice(index, 1);
     },
 
-    focusFunctionPage(id) {
-      console.log(`Focusing function page with id: ${id}`);
+    focusFunctionPage(index) {
+      let dimentions = customFunctionPagesTemplate.value[index].getDimentions()
+      draggableBackgroundTemplate.value.setPosition(
+        -(dimentions.x + dimentions.width / 2 - window.innerWidth / 2),
+        -(dimentions.y + dimentions.height / 2 - window.innerHeight / 2));
     },
 
     resetFunctionPagePosition(index) {
@@ -42,8 +46,17 @@ export function useGlobalSidebarStore() {
     },
 
     resetAllPagesPosition() {
-      draggableBackgroundTemplate.value.resetPosition();
+      draggableBackgroundTemplate.value.setPosition(0, 0);
       customFunctionPagesTemplate.value.forEach(e => e.resetPosition());
+    },
+
+    pageInteractedWithCallback(id) {
+      if (lastInteractedPageId == id) return;
+      let f = state.openPages.find(e => e.id == lastInteractedPageId)
+      if (f) { f.zIndex = 0 }
+      f = state.openPages.find(e => e.id == id)
+      f.zIndex = 1
+      lastInteractedPageId = id
     },
   };
 }

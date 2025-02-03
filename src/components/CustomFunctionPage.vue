@@ -4,7 +4,8 @@
     height: minimized ? '40px' : `${dimensions.height}px`,
     left: `${position.x}px`,
     top: `${position.y}px`,
-  }">
+    zIndex: zIndex,
+  }" @mousedown="$emit('interactedWith')">
     <!-- Header with Minimize Button -->
     <div class="page-header" @mousedown="onHeaderMouseDown">
       <span>{{ name ?? "Unnamed Custom Function" }}</span>
@@ -57,14 +58,18 @@ export default {
     startPosition: {
       type: Object,
       default: { x: 100, y: 100 }
-    }
+    },
+    zIndex: {
+      required: true,
+      type: Number
+    },
   },
   data() {
     return {
       minimized: false,
     };
   },
-  expose: ['resetPosition'],
+  expose: ['resetPosition', 'getDimentions'],
   setup(props) {
     const cfData = useCustomFunction(props.customFunctionName)
     const connectionsArea = useTemplateRef("connectionsArea")
@@ -105,6 +110,10 @@ export default {
       position.value.y = props.startPosition.y
     }
 
+    const getDimentions = () => {
+      return { x: position.value.x, y: position.value.y, width: dimensions.value.width, height: dimensions.value.height }
+    }
+
     return {
       cfData,
       position,
@@ -113,6 +122,7 @@ export default {
       onResizeMouseDown,
       onContextMenu,
       resetPosition,
+      getDimentions
     };
   },
   methods: {
