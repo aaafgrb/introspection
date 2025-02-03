@@ -27,17 +27,16 @@
 <script>
 import { useTemplateRef } from 'vue';
 import GlobalCommands from './GlobalCommands.vue';
-
-
+import CustomFunctionPageList from './CustomFunctionPageList.vue';
 
 export default {
-  components: { GlobalCommands },
+  components: { GlobalCommands, CustomFunctionPageList },
   data() {
     return {
       isRetracted: false,
       items: [
-        { header: 'Item 1', component: "GlobalCommands", collapsed: false },
-        { header: 'Item 2', component: "GlobalCommands", collapsed: false },
+        { header: 'Control', component: "GlobalCommands", collapsed: false },
+        { header: 'Custom Function Pages', component: "CustomFunctionPageList", collapsed: false },
         { header: 'Item 3', component: "GlobalCommands", collapsed: false },
         { header: 'Item 4', component: "GlobalCommands", collapsed: false },
         { header: 'Item 5', component: "GlobalCommands", collapsed: false },

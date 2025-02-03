@@ -1,29 +1,46 @@
 <template>
   <div style="height: 100vh;">
-    <DraggableBackground>
-      <CustomFunctionPage :custom-function-name="`test`" :id="0" />
+    <DraggableBackground ref="draggable-background">
+      <CustomFunctionPage v-for="page in sidebarStore.openPages" :key="page.id"
+        :custom-function-name="page.customFunctionName" :id="page.id" :startPosition="page.position" :name="page.name"
+        ref="custom-function-pages" />
     </DraggableBackground>
   </div>
-  <!-- <GlobalSidebar :baseFunctions="baseFunctions" :customFunctions="customFunctions" :unsavedFunctions="unsavedFunctions"
-    :sessionFunctions="sessionFunctions" /> -->
+  <GlobalSidebar />
+  <ContextMenu ref="context-menu" />
 </template>
 
 <script>
-import CustomFunctionPage from "./CustomFunctionPage.vue";
-import DraggableBackground from "./DraggableBackground.vue";
-import FunctionNode from "./FunctionNode.vue";
+import { useGlobalSidebarStore } from "@/stores/useGlobalSidebarStore";
+import CustomFunctionPage from "@/components/CustomFunctionPage.vue";
+import GlobalSidebar from "@/components/GlobalSidebar.vue";
+import DraggableBackground from "@/components/DraggableBackground.vue";
+import ContextMenu from "./ContextMenu.vue";
+import { provide, useTemplateRef } from "vue";
 
 export default {
   components: {
     CustomFunctionPage,
-    FunctionNode,
+    GlobalSidebar,
     DraggableBackground,
+    ContextMenu
+  },
+  mounted() {
+
+  },
+  setup() {
+    const sidebarStore = useGlobalSidebarStore();
+    const contextMenu = useTemplateRef("context-menu")
+
+    const openContextMenu = (...args) => contextMenu.value.openMenu(...args);
+    provide("openContextMenu", openContextMenu)
+
+    const draggableBackgroundTemplate = useTemplateRef("draggable-background")
+    sidebarStore.setDraggableBackgroundTemplate(draggableBackgroundTemplate)
+    const customFunctionPagesTemplate = useTemplateRef("custom-function-pages")
+    sidebarStore.setCustomFunctionPagesTemplate(customFunctionPagesTemplate)
+
+    return { sidebarStore, openContextMenu };
   },
 };
 </script>
-
-<style>
-body {
-  overflow: hidden;
-}
-</style>

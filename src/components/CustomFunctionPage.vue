@@ -7,7 +7,7 @@
   }">
     <!-- Header with Minimize Button -->
     <div class="page-header" @mousedown="onHeaderMouseDown">
-      <span>Custom Function</span>
+      <span>{{ name ?? "Unnamed Custom Function" }}</span>
       <button @click.stop="toggleMinimized" class="minimize-button">
         {{ minimized ? "Expand" : "Minimize" }}
       </button>
@@ -30,7 +30,7 @@
 -->
 
 <script>
-import { ref, computed, useTemplateRef } from "vue";
+import { ref, watch, useTemplateRef } from "vue";
 import { useDraggable } from "./useDraggable";
 import DraggableBackground from "./DraggableBackground.vue";
 import FunctionNode from "./FunctionNode.vue";
@@ -50,13 +50,21 @@ export default {
     customFunctionName: {
       type: String,
       required: true,
+    },
+    name: {
+      type: String
+    },
+    startPosition: {
+      type: Object,
+      default: { x: 100, y: 100 }
     }
   },
   data() {
     return {
-      minimized: false, // Track minimization state
+      minimized: false,
     };
   },
+  expose: ['resetPosition'],
   setup(props) {
     const cfData = useCustomFunction(props.customFunctionName)
     const connectionsArea = useTemplateRef("connectionsArea")
@@ -68,7 +76,8 @@ export default {
     }
 
     // Draggable page header
-    const position = ref({ x: 100, y: 100 });
+    const position = ref({ x: props.startPosition.x, y: props.startPosition.y });
+
     const { onMouseDown: onHeaderMouseDown } = useDraggable({
       onDrag: (dx, dy) => {
         position.value.x += dx;
@@ -89,6 +98,13 @@ export default {
       },
     });
 
+    const resetPosition = () => {
+      dimensions.value.width = 400;
+      dimensions.value.height = 300;
+      position.value.x = props.startPosition.x
+      position.value.y = props.startPosition.y
+    }
+
     return {
       cfData,
       position,
@@ -96,6 +112,7 @@ export default {
       onHeaderMouseDown,
       onResizeMouseDown,
       onContextMenu,
+      resetPosition,
     };
   },
   methods: {
