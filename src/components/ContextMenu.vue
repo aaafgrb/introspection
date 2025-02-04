@@ -64,7 +64,6 @@ export default {
   font-size: 14px;
   color: #eaeaea;
   cursor: pointer;
-  transition: background 0.2s ease-in-out;
 }
 
 .menu-item:hover {

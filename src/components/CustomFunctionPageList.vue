@@ -52,6 +52,7 @@ export default {
   font-size: 14px;
   border-radius: 6px;
   cursor: pointer;
+  user-select: none;
 }
 
 .add-btn:hover {
@@ -76,6 +77,7 @@ export default {
   font-weight: 500;
   flex-grow: 1;
   cursor: pointer;
+  user-select: none;
 }
 
 .button-group {

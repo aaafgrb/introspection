@@ -40,6 +40,7 @@ export default {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  user-select: none;
 }
 
 .blue {

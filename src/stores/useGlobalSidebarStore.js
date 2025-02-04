@@ -39,6 +39,7 @@ export function useGlobalSidebarStore() {
       draggableBackgroundTemplate.value.setPosition(
         -(dimentions.x + dimentions.width / 2 - window.innerWidth / 2),
         -(dimentions.y + dimentions.height / 2 - window.innerHeight / 2));
+      this.bringPageUp(state.openPages[index].id)
     },
 
     resetFunctionPagePosition(index) {
@@ -51,12 +52,16 @@ export function useGlobalSidebarStore() {
     },
 
     pageInteractedWithCallback(id) {
+      this.bringPageUp(id)
+    },
+
+    bringPageUp(id) {
       if (lastInteractedPageId == id) return;
       let f = state.openPages.find(e => e.id == lastInteractedPageId)
       if (f) { f.zIndex = 0 }
       f = state.openPages.find(e => e.id == id)
       f.zIndex = 1
       lastInteractedPageId = id
-    },
+    }
   };
 }
