@@ -24,7 +24,7 @@
 
     <!-- Resize Handle (Hidden When Minimized) -->
     <div v-show="!minimized" class="resize-handle" @mousedown="onResizeMouseDown"></div>
-    <CustomFunctionSidebar :cfData="cfData" />
+    <CustomFunctionSidebar :cfData="cfData" :name="name" :customFunctionName="customFunctionName" />
   </div>
 </template>
 <!-- //todo: viewonly | edit<br>

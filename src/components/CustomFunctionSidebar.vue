@@ -7,10 +7,10 @@
     <div class="sidebar-content">
       <ul class="sidebar-list" v-if="!isRetracted">
         <li class="sidebar-item">
-          <div class="sidebar-item-header" @click="toggleItem(index)">
+          <div class="sidebar-item-header">
             <span>ASD</span>
           </div>
-          <div class="sidebar-item-content">
+          <div class=" sidebar-item-content">
           </div>
         </li>
       </ul>
@@ -24,6 +24,14 @@ export default {
     cfData: {
       type: Object,
       required: true
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    customFunctionName: {
+      type: String,
+      required: true,
     }
   },
   data() {
@@ -35,6 +43,8 @@ export default {
     toggleSidebar() {
       this.isRetracted = !this.isRetracted;
     },
+  },
+  setup(props) {
   },
 };
 </script>
