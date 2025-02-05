@@ -2,18 +2,18 @@
   "name": "introspection",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
-    "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
     "test:unit": "vitest",
     "lint": "eslint . --fix",
-    "format": "prettier --write src/"
+    "dev": "vite",
+    "format": "prettier --write src/",
+    "preview": "vite preview",
+    "styleguide": "vue-cli-service styleguidist",
+    "styleguide:build": "vue-cli-service styleguidist:build"
   },
   "dependencies": {
     "introspection": "file:",
-    "leader-line-new": "^1.1.9",
     "mitt": "^3.0.1",
     "pinia": "^2.3.0",
     "vue": "^3.5.13",
@@ -31,6 +31,8 @@
     "prettier": "^3.3.3",
     "vite": "^6.0.1",
     "vite-plugin-vue-devtools": "^7.6.5",
-    "vitest": "^2.1.5"
-  }
+    "vitest": "^2.1.5",
+    "vue-cli-plugin-styleguidist": "~4.72.4"
+  },
+  "type": "module"
 }

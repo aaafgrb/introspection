@@ -24,6 +24,7 @@
 
     <!-- Resize Handle (Hidden When Minimized) -->
     <div v-show="!minimized" class="resize-handle" @mousedown="onResizeMouseDown"></div>
+    <CustomFunctionSidebar :cfData="cfData" />
   </div>
 </template>
 <!-- //todo: viewonly | edit<br>
@@ -37,12 +38,14 @@ import DraggableBackground from "./DraggableBackground.vue";
 import FunctionNode from "./FunctionNode.vue";
 import { useCustomFunction } from "./useCustomFunction";
 import ConnectionArrow from "./ConnectionArrow.vue";
+import CustomFunctionSidebar from "./CustomFunctionSidebar.vue";
 
 export default {
   components: {
     FunctionNode,
     DraggableBackground,
-    ConnectionArrow
+    ConnectionArrow,
+    CustomFunctionSidebar,
   },
   props: {
     id: {
