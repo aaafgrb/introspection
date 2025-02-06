@@ -1,8 +1,8 @@
 <template>
   <div class="global-control">
-    <button class="control-button blue" @click="resetPositions">Reset Position</button>
-    <button class="control-button blue">Help Page</button>
-    <button class="control-button red">Reset Memory</button>
+    <button class="control-button" @click="resetPositions">Reset Position</button>
+    <button class="control-button">Help Page</button>
+    <button class="control-button danger-button">Reset Memory</button>
   </div>
 </template>
 
@@ -27,10 +27,9 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 15px;
-  background: #f7faff;
+  padding: 5px;
+  background: var(--secondary-background-color);
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .control-button {
@@ -41,23 +40,20 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   user-select: none;
+  background: var(--primary-button-color);
+  color: var(--primary-text-color);
 }
 
-.blue {
-  background: #007bff;
+.control-button:hover {
+  background: var(--primary-button-hover-color);
+}
+
+.danger-button {
+  background: var(--danger-button-color);
   color: white;
 }
 
-.blue:hover {
-  background: #0056b3;
-}
-
-.red {
-  background: #dc3545;
-  color: white;
-}
-
-.red:hover {
-  background: #a71d2a;
+.danger-button:hover {
+  background: var(--danger-button-hover-color);
 }
 </style>

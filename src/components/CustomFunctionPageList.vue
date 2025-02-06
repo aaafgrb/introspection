@@ -45,8 +45,8 @@ export default {
 }
 
 .add-btn {
-  background: #007bff;
-  color: white;
+  background: var(--primary-button-color);
+  color: var(--primary-text-color);
   border: none;
   padding: 8px 15px;
   font-size: 14px;
@@ -56,20 +56,21 @@ export default {
 }
 
 .add-btn:hover {
-  background: #0056b3;
+  background: var(--primary-button-hover-color);
 }
 
 .function-page-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #e0f4ff;
+  background: var(--secondary-button-color);
+  color: var(--secondary-text-color);
   padding: 10px 15px;
   border-radius: 8px;
 }
 
 .function-page-item:hover {
-  background: #cce8ff;
+  background: var(--secondary-button-hover-color);
 }
 
 .function-name {
@@ -87,7 +88,7 @@ export default {
 
 .empty-text {
   text-align: center;
-  color: #666;
+  color: var(--secondary-text-color);
   font-size: 14px;
   margin-top: 10px;
 }

@@ -86,8 +86,8 @@ export default {
 .function-node {
   position: absolute;
   width: 150px;
-  border: 2px solid #007bff;
-  background-color: #f8f9fa;
+  border: 2px solid var(--primary-color);
+  background-color: var(--primary-background-color);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   user-select: none;
@@ -95,8 +95,8 @@ export default {
 }
 
 .node-header {
-  background-color: #007bff;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--primary-text-color);
   padding: 5px 10px;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
@@ -107,7 +107,7 @@ export default {
   display: flex;
   flex-direction: column;
   padding: 2px;
-  background-color: white;
+  background-color: var(--primary-background-color);
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
   gap: 0px;
@@ -133,8 +133,7 @@ export default {
 }
 
 .node-controls {
-  background-color: #007bff;
-  border-top: 1px solid #ddd;
+  background-color: var(--primary-color);
   border-radius: 4px;
   padding: 5px;
   text-align: center;

@@ -148,8 +148,8 @@ export default {
 <style scoped>
 .custom-function-page {
   position: absolute;
-  background-color: #f8f9fa;
-  border: 2px solid #007bff;
+  background-color: var(--primary-background-color);
+  border: 2px solid var(--primary-color);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   user-select: none;
 }
@@ -160,8 +160,8 @@ export default {
 
 .page-header {
   height: 40px;
-  background-color: #007bff;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--primary-text-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -172,7 +172,7 @@ export default {
 .minimize-button {
   background: none;
   border: none;
-  color: white;
+  color: var(--primary-text-color);
   cursor: pointer;
   font-size: 14px;
 }
@@ -180,7 +180,7 @@ export default {
 .page-content {
   height: calc(100% - 40px);
   overflow: hidden;
-  background-color: white;
+  background-color: var(--primary-background-color);
   position: relative;
 }
 
@@ -190,7 +190,7 @@ export default {
   right: 0;
   width: 20px;
   height: 20px;
-  background-color: #007bff;
+  background-color: var(--primary-color);
   cursor: se-resize;
 }
 </style>

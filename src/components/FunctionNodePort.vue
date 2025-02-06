@@ -189,8 +189,8 @@ export default {
   position: absolute;
   width: 8px;
   height: 8px;
-  background-color: #007bff;
-  border: 2px solid white;
+  background-color: var(--primary-color);
+  border: 2px solid var(--primary-background-color);
   border-radius: 50%;
   cursor: grab;
   transform-origin: center;
@@ -208,7 +208,7 @@ export default {
 
 .dragging {
   transform: scale(1.2);
-  background-color: #007bff;
+  background-color: var(--port-color);
   animation: pulse 1s infinite
 }
 
@@ -220,12 +220,13 @@ export default {
 
 .handle.being-dragged-target {
   transform: scale(1.6);
-  background-color: red !important;
+  background-color: var(--port-cancel-color) !important;
   animation: pulse 10s infinite
 }
 
 .handle.wrong-io-type {
-  background-color: gray;
+  background-color: var(--port-off-color);
+  ;
 }
 
 .handle.wrong-io-type:hover {
@@ -233,7 +234,7 @@ export default {
 }
 
 .wrong-data-type {
-  background-color: yellow;
+  background-color: var(--port-warn-color);
   animation: pulse 1s infinite
 }
 

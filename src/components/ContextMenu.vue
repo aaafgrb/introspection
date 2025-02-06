@@ -49,8 +49,8 @@ export default {
 <style scoped>
 .right-click-menu {
   position: absolute;
-  background-color: #007bff;
-  border: 1px solid #007bffe4;
+  background-color: var(--primary-color);
+  border: 1px solid var(--primary-color);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   border-radius: 6px;
   overflow: hidden;
@@ -62,11 +62,11 @@ export default {
 .menu-item {
   padding: 10px 14px;
   font-size: 14px;
-  color: #eaeaea;
+  color: var(--primary-text-color);
   cursor: pointer;
 }
 
 .menu-item:hover {
-  background-color: #0056b3;
+  background-color: var(--primary-button-hover-color);
 }
 </style>

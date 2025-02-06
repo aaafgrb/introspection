@@ -81,11 +81,11 @@ export default {
   right: 0;
   top: 0;
   bottom: 0;
-  background: #f7faff;
-  color: #333;
+  background: var(--primary-background-color);
+  color: var(--primary-text-color);
   transition: width 0.3s ease;
   z-index: 10;
-  border-left: 2px solid #007bff;
+  border-left: 2px solid var(--primary-color);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
@@ -98,7 +98,7 @@ export default {
 .sidebar-handle {
   width: 50px;
   height: 30px;
-  background-color: #007bff;
+  background-color: var(--primary-color);
   text-align: center;
   cursor: pointer;
   display: flex;
@@ -108,18 +108,18 @@ export default {
   right: 0;
   top: 20px;
   user-select: none;
-  color: white;
+  color: var(--primary-text-color);
   z-index: 2;
 }
 
 .sidebar-header {
-  background-color: #e0f4ff;
-  color: #333;
+  background-color: var(--secondary-background-color);
+  color: var(--secondary-text-color);
   padding-right: 50px;
   text-align: center;
   font-size: 16px;
   font-weight: bold;
-  border-bottom: 2px solid #007bff;
+  border-bottom: 2px solid var(--primary-color);
   position: absolute;
   right: 0;
   left: 0;
@@ -147,14 +147,14 @@ export default {
 
 .sidebar-item {
   margin-bottom: 10px;
-  background-color: #e0f4ff;
+  background-color: var(--secondary-background-color);
   border-radius: 15px;
   transition: all 0.3s ease;
 }
 
 .is-retracted .sidebar-item {
   border-radius: 5px;
-  background-color: #007bff;
+  background-color: var(--primary-color);
   height: 15px;
 }
 
@@ -167,20 +167,20 @@ export default {
   cursor: pointer;
   font-weight: bold;
   padding: 10px;
-  background-color: #007bff;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--primary-text-color);
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
   transition: background-color 0.3s;
 }
 
 .sidebar-item-header:hover {
-  background-color: #1284ff;
+  background-color: var(--primary-button-hover-color);
 }
 
 .is-retracted .sidebar-item-header {
   border-radius: 5px !important;
-  background-color: #007bff;
+  background-color: var(--primary-color);
 }
 
 .is-collapsed .sidebar-item-header {
@@ -192,7 +192,7 @@ export default {
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
   padding: 10px;
-  background-color: #e0e8ff;
+  background-color: var(--secondary-background-color);
   transition: all 0.3s ease;
 }
 

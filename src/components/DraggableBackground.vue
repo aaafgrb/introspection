@@ -62,7 +62,7 @@ export default {
 .background {
   cursor: grab;
   height: 100%;
-  background-color: white;
+  background-color: var(--primary-background-color);
   overflow: hidden;
   position: relative;
 }

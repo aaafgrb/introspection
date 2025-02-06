@@ -59,13 +59,14 @@ export default {
   top: 0;
   left: -265px;
   bottom: 0;
-  background: #f0f4f8;
-  color: #333;
+  background: var(--primary-background-color);
+  color: var(--secondary-text-color);
   transition: all 0.3s ease;
-  border: 3px solid #007bff;
+  border: 3px solid var(--primary-color);
   display: flex;
   flex-direction: column;
   box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+  cursor: default;
 }
 
 .sidebar-content {
@@ -75,7 +76,7 @@ export default {
 .is-retracted {
   left: 0px;
   width: 0px;
-  border: 0px solid #007bff;
+  border: 0px solid var(--primary-color);
   transition: all 0.3s ease;
 }
 
@@ -84,8 +85,8 @@ export default {
   height: 42px;
   left: -22px;
   top: -2px;
-  background-color: #007bff;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--primary-text-color);
   text-align: center;
   cursor: pointer;
   display: flex;
@@ -103,7 +104,7 @@ export default {
   flex-direction: column;
   margin-bottom: 5px;
   padding: 0.5rem;
-  background-color: #f9f9f9;
+  background-color: var(--secondary-background-color);
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -112,7 +113,7 @@ label {
   font-size: 1rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
-  color: #333;
+  color: var(--secondary-text-color);
 }
 
 input[type="text"] {
@@ -126,7 +127,7 @@ input[type="text"] {
 }
 
 input[type="text"]:focus {
-  border-color: #0056b3;
+  border-color: var(--primary-color);
   outline: none;
 }
 
@@ -134,16 +135,15 @@ button {
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   border: none;
-  background-color: #608dff;
-  color: #fff;
+  background-color: var(--secondary-button-color);
+  color: var(--secondary-text-color);
   cursor: pointer;
   border-radius: 5px;
   margin-top: 5px;
-  transition: background-color 0.3s ease;
   width: 100%;
 }
 
 button:hover {
-  background-color: #4177ff;
+  background-color: var(--secondary-button-hover-color);
 }
 </style>
