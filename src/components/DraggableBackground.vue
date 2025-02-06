@@ -3,6 +3,8 @@
     @wheel="(event) => onWheelZoom(event, background, backgroundPosition)" class="background">
     <div :style="{
       transform: `scale(${localZoom})`,
+      left: `${backgroundPosition.x}px`,
+      top: `${backgroundPosition.y}px`,
       transformOrigin: '0 0'
     }" class="background-content">
       <slot></slot>
@@ -41,7 +43,6 @@ export default {
     const setPosition = (x, y) => {
       backgroundPosition.value.x = x;
       backgroundPosition.value.y = y;
-      background.value.style.transform = `translate(${x}px, ${y}px)`
     }
 
     return {
