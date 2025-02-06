@@ -2,8 +2,6 @@
   <div ref="background" @mousedown="onBackgroundMouseDown"
     @wheel="(event) => onWheelZoom(event, background, backgroundPosition)" class="background">
     <div :style="{
-      left: `${backgroundPosition.x}px`,
-      top: `${backgroundPosition.y}px`,
       transform: `scale(${localZoom})`,
       transformOrigin: '0 0'
     }" class="background-content">
@@ -26,8 +24,7 @@ export default {
     // Draggable functionality
     const { onMouseDown: onBackgroundMouseDown } = useDraggable({
       onDrag: (dx, dy) => {
-        backgroundPosition.value.x += dx;
-        backgroundPosition.value.y += dy;
+        setPosition(backgroundPosition.value.x + dx, backgroundPosition.value.y + dy)
       },
       condition: (event) => event.target === background.value,
     });
@@ -44,6 +41,7 @@ export default {
     const setPosition = (x, y) => {
       backgroundPosition.value.x = x;
       backgroundPosition.value.y = y;
+      background.value.style.transform = `translate(${x}px, ${y}px)`
     }
 
     return {

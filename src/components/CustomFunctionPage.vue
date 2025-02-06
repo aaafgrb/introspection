@@ -2,10 +2,8 @@
   <div class="custom-function-page" :class="{ minimized }" :style="{
     width: minimized ? '200px' : `${dimensions.width}px`,
     height: minimized ? '40px' : `${dimensions.height}px`,
-    left: `${position.x}px`,
-    top: `${position.y}px`,
     zIndex: zIndex,
-  }" @mousedown="$emit('interactedWith')">
+  }" ref="page" @mousedown="$emit('interactedWith')">
     <!-- Header with Minimize Button -->
     <div class="page-header" @mousedown="onHeaderMouseDown">
       <span>{{ name ?? "Unnamed Custom Function" }}</span>
@@ -72,11 +70,22 @@ export default {
       minimized: false,
     };
   },
+  mounted() {
+    this.resetPosition()
+  },
   expose: ['resetPosition', 'getDimentions'],
   setup(props) {
     const cfData = useCustomFunction(props.customFunctionName)
     const connectionsArea = useTemplateRef("connectionsArea")
     cfData.connectionsArea = connectionsArea;
+
+    const page = useTemplateRef("page")
+
+    const setPosition = (x, y) => {
+      position.value.x = x
+      position.value.y = y
+      page.value.style.transform = `translate(${x}px, ${y}px)`
+    }
 
     const onContextMenu = (e) => {
       e.preventDefault();
@@ -88,8 +97,7 @@ export default {
 
     const { onMouseDown: onHeaderMouseDown } = useDraggable({
       onDrag: (dx, dy) => {
-        position.value.x += dx;
-        position.value.y += dy;
+        setPosition(position.value.x + dx, position.value.y + dy)
       },
     });
 
@@ -109,8 +117,7 @@ export default {
     const resetPosition = () => {
       dimensions.value.width = 400;
       dimensions.value.height = 300;
-      position.value.x = props.startPosition.x
-      position.value.y = props.startPosition.y
+      setPosition(props.startPosition.x, props.startPosition.y)
     }
 
     const getDimentions = () => {
@@ -125,7 +132,8 @@ export default {
       onResizeMouseDown,
       onContextMenu,
       resetPosition,
-      getDimentions
+      getDimentions,
+      setPosition
     };
   },
   methods: {

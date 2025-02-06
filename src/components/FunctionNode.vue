@@ -1,5 +1,5 @@
 <template>
-  <div class="function-node" :style="{ top: `${position.y}px`, left: `${position.x}px` }" @mousedown.stop="">
+  <div class="function-node" :style="{ transform: `translate(${position.x}px, ${position.y}px)` }" @mousedown.stop="">
     <!-- header -->
     <div class=" node-header" @mousedown.stop="onHeaderMouseDown">
       {{ nodeData.name }}

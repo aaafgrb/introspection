@@ -4,16 +4,8 @@
       <span v-if="isRetracted">+</span>
       <span v-else>&gt;</span>
     </div>
-    <div class="sidebar-content">
-      <ul class="sidebar-list" v-if="!isRetracted">
-        <li class="sidebar-item">
-          <div class="sidebar-item-header">
-            <span>ASD</span>
-          </div>
-          <div class=" sidebar-item-content">
-          </div>
-        </li>
-      </ul>
+    <div class="sidebar-content" v-if="!isRetracted">
+      {{ name }}
     </div>
   </div>
 </template>
