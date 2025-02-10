@@ -6,22 +6,24 @@
     </div>
     <div class="sidebar-content" v-if="!isRetracted">
       <div class="config-item">
-        <label for="pageTitle">Page Name:</label>
-        <input id="pageTitle" type="text" :value="name">
-        <button>Save</button>
+        <label>Page Name:</label>
+        <input ref="nameInput" type="text" :value="name">
+        <button @click="saveName">Save</button>
       </div>
 
       <div class="config-item function-config">
-        <label for="pageTitle">Function Name:</label>
-        <input id="pageTitle" type="text" :value="customFunctionName">
-        <button>Load</button>
-        <button>Save</button>
+        <label>Function Name:</label>
+        <input ref="customFunctionNameInput" type="text" :value="customFunctionName">
+        <button @click="loadFunction">Load</button>
+        <button @click="saveFunction">Save</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { useTemplateRef } from 'vue';
+
 export default {
   props: {
     cfData: {
@@ -47,7 +49,27 @@ export default {
       this.isRetracted = !this.isRetracted;
     },
   },
-  setup(props) {
+  emits: ['change-name'],
+  setup(props, { emit }) {
+    const customFunctionNameInput = useTemplateRef("customFunctionNameInput")
+    const nameInput = useTemplateRef("nameInput")
+
+    const saveFunction = () => {
+
+    }
+
+    const saveName = () => {
+      emit('change-name', nameInput.value.value);
+    }
+
+    const loadFunction = () => {
+
+    }
+    return {
+      saveFunction,
+      saveName,
+      loadFunction,
+    }
   },
 };
 </script>

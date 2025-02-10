@@ -22,7 +22,8 @@
 
     <!-- Resize Handle (Hidden When Minimized) -->
     <div v-show="!minimized" class="resize-handle" @mousedown="onResizeMouseDown"></div>
-    <CustomFunctionSidebar :cfData="cfData" :name="name" :customFunctionName="customFunctionName" />
+    <CustomFunctionSidebar :cfData="cfData" :name="name" :customFunctionName="customFunctionName"
+      @change-name="changePageName" />
   </div>
 </template>
 <!-- //todo: viewonly | edit<br>
@@ -124,6 +125,10 @@ export default {
       return { x: position.value.x, y: position.value.y, width: dimensions.value.width, height: dimensions.value.height }
     }
 
+    const changePageName = (name) => {
+      console.log(name)
+    }
+
     return {
       cfData,
       position,
@@ -133,7 +138,8 @@ export default {
       onContextMenu,
       resetPosition,
       getDimentions,
-      setPosition
+      setPosition,
+      changePageName,
     };
   },
   methods: {
