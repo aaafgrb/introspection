@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { registerCustomFunction } from "@/lib/customFunctions";
 
 export const useCustomFunctionStore = defineStore("customFunction", {
   state: () => ({

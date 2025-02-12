@@ -1,12 +1,13 @@
 <template>
   <div class="custom-function-page" :class="{ minimized }" :style="{
-    width: minimized ? '200px' : `${dimensions.width}px`,
-    height: minimized ? '40px' : `${dimensions.height}px`,
-    zIndex: zIndex,
+    width: minimized ? '200px' : `${pageData.component.dimensions.width}px`,
+    height: minimized ? '40px' : `${pageData.component.dimensions.height}px`,
+    zIndex: pageData.component.zIndex,
+    transform: `translate(${pageData.component.position.x}px, ${pageData.component.position.y}px)`
   }" ref="page" @mousedown="$emit('interactedWith')">
     <!-- Header with Minimize Button -->
     <div class="page-header" @mousedown="onHeaderMouseDown">
-      <span>{{ name ?? "Unnamed Custom Function" }}</span>
+      <span>{{ pageData.pageName ?? "Unnamed Custom Function" }}</span>
       <button @click.stop="toggleMinimized" class="minimize-button">
         {{ minimized ? "Expand" : "Minimize" }}
       </button>
@@ -15,140 +16,60 @@
     <!-- Page Content (Hidden When Minimized) -->
     <div v-show="!minimized" class="page-content" @contextmenu="onContextMenu">
       <DraggableBackground>
-        <FunctionNode :cfData="cfData" v-for="[key, node] in cfData.state.nodes" :nodeData="node" :key="key" />
-        <div ref="connectionsArea"></div>
+        <FunctionNode v-for="[key, node] in pageData.nodes" :nodeData="node" :key="key" :pageId="pageData.id" />
+        <ConnectionArrow v-for="[key, connection] in pageData.connections" :key="key" :pageId="pageData.id"
+          :connectionData="connection" />
       </DraggableBackground>
     </div>
 
     <!-- Resize Handle (Hidden When Minimized) -->
-    <div v-show="!minimized" class="resize-handle" @mousedown="onResizeMouseDown"></div>
-    <CustomFunctionSidebar :cfData="cfData" :name="name" :customFunctionName="customFunctionName"
-      @change-name="changePageName" />
+    <div v-show="!minimized" class="resize-handle" @mousedown="onResizeMouseDown">
+    </div>
+    <!-- <CustomFunctionSidebar /> -->
   </div>
 </template>
-<!-- //todo: viewonly | edit<br>
-//todo: clean unused registry logic<br>
--->
 
-<script>
-import { ref, watch, useTemplateRef } from "vue";
+<script setup>
+import { ref, watch, useTemplateRef, onMounted } from "vue";
 import { useDraggable } from "./useDraggable";
 import DraggableBackground from "./DraggableBackground.vue";
 import FunctionNode from "./FunctionNode.vue";
-import { useCustomFunction } from "./useCustomFunction";
 import ConnectionArrow from "./ConnectionArrow.vue";
 import CustomFunctionSidebar from "./CustomFunctionSidebar.vue";
+import { useCustomFunctionPagesStore } from "@/stores/useCustomFunctionPagesStore";
 
-export default {
-  components: {
-    FunctionNode,
-    DraggableBackground,
-    ConnectionArrow,
-    CustomFunctionSidebar,
+const props = defineProps({
+  pageData: {
+    type: Object,
+    required: true
+  }
+})
+
+const customFunctionPageStore = useCustomFunctionPagesStore()
+const minimized = ref(false);
+
+const toggleMinimized = () => {
+  minimized = !minimized;
+}
+
+const onContextMenu = (e) => {
+  e.preventDefault();
+  //cfData.cancelConnect();
+}
+
+// Draggable page header
+const { onMouseDown: onHeaderMouseDown } = useDraggable({
+  onDrag: (dx, dy) => {
+    customFunctionPageStore.offsetPagePosition(props.pageData.id, dx, dy)
   },
-  props: {
-    id: {
-      required: true
-    },
-    customFunctionName: {
-      type: String,
-      required: true,
-    },
-    name: {
-      type: String
-    },
-    startPosition: {
-      type: Object,
-      default: { x: 100, y: 100 }
-    },
-    zIndex: {
-      required: true,
-      type: Number
-    },
+});
+
+// Resizable page
+const { onMouseDown: onResizeMouseDown } = useDraggable({
+  onDrag: (dx, dy) => {
+    customFunctionPageStore.offsetPageDimensions(props.pageData.id, dx, dy)
   },
-  data() {
-    return {
-      minimized: false,
-    };
-  },
-  mounted() {
-    this.resetPosition()
-  },
-  expose: ['resetPosition', 'getDimentions'],
-  setup(props) {
-    const cfData = useCustomFunction(props.customFunctionName)
-    const connectionsArea = useTemplateRef("connectionsArea")
-    cfData.connectionsArea = connectionsArea;
-
-    const page = useTemplateRef("page")
-
-    const setPosition = (x, y) => {
-      position.value.x = x
-      position.value.y = y
-      page.value.style.transform = `translate(${x}px, ${y}px)`
-    }
-
-    const onContextMenu = (e) => {
-      e.preventDefault();
-      cfData.cancelConnect();
-    }
-
-    // Draggable page header
-    const position = ref({ x: props.startPosition.x, y: props.startPosition.y });
-
-    const { onMouseDown: onHeaderMouseDown } = useDraggable({
-      onDrag: (dx, dy) => {
-        setPosition(position.value.x + dx, position.value.y + dy)
-      },
-    });
-
-    // Resizable page
-    const dimensions = ref({ width: 400, height: 300 });
-    const { onMouseDown: onResizeMouseDown } = useDraggable({
-      onDrag: (dx, dy) => {
-        dimensions.value.width += dx;
-        dimensions.value.height += dy;
-
-        // Ensure minimum size
-        dimensions.value.width = Math.max(dimensions.value.width, 200);
-        dimensions.value.height = Math.max(dimensions.value.height, 150);
-      },
-    });
-
-    const resetPosition = () => {
-      dimensions.value.width = 400;
-      dimensions.value.height = 300;
-      setPosition(props.startPosition.x, props.startPosition.y)
-    }
-
-    const getDimentions = () => {
-      return { x: position.value.x, y: position.value.y, width: dimensions.value.width, height: dimensions.value.height }
-    }
-
-    const changePageName = (name) => {
-      console.log(name)
-    }
-
-    return {
-      cfData,
-      position,
-      dimensions,
-      onHeaderMouseDown,
-      onResizeMouseDown,
-      onContextMenu,
-      resetPosition,
-      getDimentions,
-      setPosition,
-      changePageName,
-    };
-  },
-  methods: {
-    toggleMinimized() {
-      this.minimized = !this.minimized;
-    },
-  },
-};
-
+});
 </script>
 
 <style scoped>

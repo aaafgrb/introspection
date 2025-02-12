@@ -1,61 +1,15 @@
-import { functionRegistry } from "./baseFunctionRegistry.js"
-
-/**
- * 
- * @param {String} name - The name of the function that will be removed
- */
-
-export function removeCustomFunction(name) {
-  functionRegistry.removeFromRegistry(name)
-}
-
-/**
- * Registers a new custom function to the function registry
- * @param {Object} functionDef - The object containing the function definition
- * @returns {Function | Null} Returns the generated function, or null if the parsing failed
- */
-export function registerCustomFunction(functionDef) {
-  // Check for name
-  if (!functionDef.name) {
-    console.warn("Skipping function: Missing required metadata fields.", functionDef);
-    return null;
-  }
-
-  //get function
-  const func = loadCustomFunctions(functionDef.definition)
-  if (!func) {
-    console.warn("Skipping function: Couldn't parse function definition", functionDef);
-    return null;
-  }
-
-  // Register the function
-  functionRegistry.addToRegistry(functionDef.name, { func: func, ...functionDef.docs })
-  console.log(`Registered function: "${functionDef.name}"`);
-  return func;
-}
-
-/**
- * Converts a custom function definition to a js function
- * @param {Object} definition - The definition of the execution of the custom function
- * @returns {Function | null} A function that executes the described function or null in case of a exception
- */
-function loadCustomFunctions(definition) {
-  // Check for definition.input and definition.output
-  if (!definition || !definition.input || !definition.output) {
-    return null;
-  }
-
-  const middle = new Map();
-  (definition.middle ?? []).forEach(x => middle.set(x.name, x));
-
-  return function (outputIndex, _instance, ...args) {
-
-    let vars = new Map()
-    definition.input.forEach((e, i) => {
-      vars.set(e, args[i]);
-    });
-
-    return solveMiddleVariable(definition.output[outputIndex], middle, vars);
+export const EMPTY_FUNCTION = {
+  "name": "empty",
+  "docs": {
+    "input_type": [],
+    "output_type": [],
+    "description": "Empty function. Does nothing",
+    "example": ""
+  },
+  "definition": {
+    "input": [],
+    "middle": [],
+    "output": []
   }
 }
 

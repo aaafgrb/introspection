@@ -1,174 +1,78 @@
 <template>
   <div class="port">
-    <span class="handle" :class="classObject" @click="mouseclick" ref="handle"></span>
-    {{ label }}
+    <span class="handle" :class="portData.component.style" @click="mouseclick" ref="handle"></span>
+    {{ portData.data.var ?? portData.data.val ?? "undefined" }}
   </div>
-  <Teleport v-if="portId.isInput && from && to && cfData.connectionsArea.value" :to="cfData.connectionsArea.value">
+  <!-- <Teleport v-if="portId.isInput && from && to && cfData.connectionsArea.value" :to="cfData.connectionsArea.value">
     <ConnectionArrow ref="connectionArrow" :from="from" :to="to" />
-  </Teleport>
+  </Teleport> -->
 </template>
 
-<script>
+<script setup>
+import { useCustomFunctionPagesStore } from '@/stores/useCustomFunctionPagesStore'
+import { onMounted, useTemplateRef } from 'vue'
 
-import { reactive, useTemplateRef, watch, ref } from 'vue';
-import ConnectionArrow from './ConnectionArrow.vue';
-
-export default {
-  components: {
-    ConnectionArrow
+const props = defineProps({
+  pageId: {
+    required: true
   },
-  props: {
-    portId: {
-      type: Object,
-      required: true
-    },
-    cfData: {
-      required: true
-    },
-    nodeData: {
-      type: Object,
-      required: true
-    },
-    label: {
-      type: String,
-      default: "default"  //change for more data later
-    },
+  nodeId: {
+    required: true
   },
-  mounted() {
-    if (this.portId.isInput) {
-      this.nodeData.params[this.portId.portIndex].offset = this.updatePortOffset()
-      let o = this.nodeData.params[this.portId.portIndex]
-      if (o.ref) {
-        this.addConnection({ nodeName: o.ref, portIndex: o.out })
-      }
-      this.to = {
-        width: this.handleElement.offsetWidth,
-        height: this.handleElement.offsetHeight,
-        portOffset: this.offset,
-        nodePosition: this.nodeData.position
-      }
-    } else {
-      this.nodeData.output[this.portId.portIndex].offset = this.updatePortOffset()
-    }
+  portData: {
+    type: Object,
+    required: true
+  }
+})
 
-  },
-  expose: ['updateConnections'],
-  setup(props) {
-    const handleElement = useTemplateRef("handle")
-    const offset = ref({ x: 0, y: 0 })
+const customFunctionPageStore = useCustomFunctionPagesStore()
 
-    const updatePortOffset = () => {
-      let walk = handleElement.value
+onMounted(() => {
+  let o = updatePortOffset()
+  customFunctionPageStore.setPortOffset(props.pageId, props.nodeId, props.portData.isInput, props.portData.id,
+    o.x + handleElement.value.offsetWidth / 2, o.y + handleElement.value.offsetHeight / 2)
+})
 
-      while (walk && !walk.classList.contains("function-node")) {
-        offset.value.x += walk.offsetLeft
-        offset.value.y += walk.offsetTop
-        walk = walk.parentElement
-      }
-      if (!walk) {
-        console.warn("Failed node port offset calculation. function-node class not found")
-        offset.value.x = 0;
-        offset.value.y = 0;
-      }
-      return offset.value
-    }
+const handleElement = useTemplateRef("handle")
+const updatePortOffset = () => {
+  let walk = handleElement.value
+  let offset = { x: 0, y: 0 }
 
-    const currentOutPortId = ref(null)
-    const connectionArrow = props.portId.isInput ? useTemplateRef("connectionArrow") : null
-    const from = ref(null)
-    const to = ref(null)
+  while (walk && !walk.classList.contains("function-node")) {
+    offset.x += walk.offsetLeft
+    offset.y += walk.offsetTop
+    walk = walk.parentElement
+  }
+  if (!walk) {
+    console.warn("Failed node port offset calculation. function-node class not found")
+    offset.x = 0;
+    offset.y = 0;
+  }
+  return offset
+}
 
-    const updateConnections = props.portId.isInput ?
-      () => { if (connectionArrow.value) connectionArrow.value.updateLine() } :
-      () => { props.nodeData.output.forEach(e => e.to.forEach(x => { if (x.func) x.func() })) }
-
-    const removeConnection = () => {
-      const n = props.cfData.state.nodes.get(currentOutPortId.value.nodeName).output[currentOutPortId.value.portIndex]
-      let index = n.to.findIndex(x => x.nodeName == props.portId.nodeName && x.portIndex == props.portId.portIndex)
-      if (index > -1) n.to.splice(index, 1)
-
-      currentOutPortId.value = null
-      from.value = null
-    }
-
-    const addConnection = (fromId) => {
-      if (currentOutPortId.value) {
-        removeConnection()
-      }
-      currentOutPortId.value = fromId
-      let n = props.cfData.state.nodes.get(fromId.nodeName)
-      let o = n.output[fromId.portIndex]
-      o.to.push({ nodeName: props.portId.nodeName, portIndex: props.portId.portIndex, func: updateConnections })
-      from.value = {
-        //assuming the port handle of the output is the same size as this handle
-        width: handleElement.value.offsetWidth,
-        height: handleElement.value.offsetHeight,
-        portOffset: o.offset,
-        nodePosition: n.position
-      }
-    }
-
-    //input ports only
-    if (props.portId.isInput) {
-      props.cfData.emitter.on("connected", (fromTo) => {
-        if (props.portId == fromTo.toId) {
-          addConnection(fromTo.fromId)
-        }
-      })
-
-      props.cfData.emitter.on("disconnect", (toId) => {
-        if (toId.nodeName == props.portId.nodeName && toId.portIndex == props.portId.portIndex) {
-          removeConnection()
-        }
-      })
-
-    }
-
-    const mouseclick = function (event) {
-      props.cfData.portHandleClick(props.portId)
-    }
-
-    //-----------------------connection css----------------------------
-
-    const classObject = reactive({
-      "dragging": false,
-      "being-dragged-target": false,
-      "wrong-io-type": false,
-      "wrong-data-type": false,
-    })
-
-    props.cfData.emitter.on("start_connect", function (hitPortId) {
-      if (hitPortId.isInput == props.portId.isInput) {
-        classObject["wrong-io-type"] = true
-        classObject["being-dragged-target"] = hitPortId == props.portId
-      } else {
-        classObject["dragging"] = true
-      }
-    })
-
-    props.cfData.emitter.on("stop_connect", e => {
-      for (let key in classObject) {
-        classObject[key] = false
-      }
-    })
-
-    //----------------------------------------
-
-    return {
-      mouseclick,
-      classObject,
-      currentOutPortId,
-      updatePortOffset,
-      offset,
-      updateConnections,
-      from, to,
-      handleElement,
-      addConnection
-    };
-  },
+const mouseclick = () => {
+  customFunctionPageStore.portCallbackClick(props.pageId, props.pageId, props.portData.id)
 }
 
 </script>
+
+<!-- 
+  props.cfData.emitter.on("start_connect", function (hitPortId) {
+    if (hitPortId.isInput == props.portId.isInput) {
+      classObject["wrong-io-type"] = true
+      classObject["being-dragged-target"] = hitPortId == props.portId
+    } else {
+      classObject["dragging"] = true
+    }
+  })
+
+  props.cfData.emitter.on("stop_connect", e => {
+    for (let key in classObject) {
+      classObject[key] = false
+    }
+  }) 
+-->
 
 <style scoped>
 .port {

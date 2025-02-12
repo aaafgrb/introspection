@@ -1,5 +1,7 @@
 <template>
-  <div class="function-node" :style="{ transform: `translate(${position.x}px, ${position.y}px)` }" @mousedown.stop="">
+  <div class="function-node"
+    :style="{ transform: `translate(${nodeData.component.position.x}px, ${nodeData.component.position.y}px)` }"
+    @mousedown.stop="">
     <!-- header -->
     <div class=" node-header" @mousedown.stop="onHeaderMouseDown">
       {{ nodeData.name }}
@@ -8,16 +10,14 @@
     <div class="node-content">
       <div class="ports-container">
         <!-- Input Ports -->
-        <div class="ports inputs" :style="{ '--port-flex': calculateFlex(nodeData.params.length) }">
-          <FunctionNodePort :cfData="cfData" :nodeData="nodeData" v-for="(input, index) in nodeData.params"
-            :port-id="{ nodeName: nodeData.name, isInput: true, portIndex: index }" :node-data="nodeData"
-            ref="input-ports" />
+        <div class="ports inputs" :style="{ '--port-flex': calculateFlex(nodeData.inPorts.length) }">
+          <FunctionNodePort v-for="[key, port] in nodeData.inPorts" :key="key" :portData="port" :pageId="pageId"
+            :nodeId="nodeData.id" ref="input-ports" />
         </div>
         <!-- Output Ports -->
-        <div class="ports outputs" :style="{ '--port-flex': calculateFlex(nodeData.output.length) }">
-          <FunctionNodePort :cfData="cfData" :nodeData="nodeData" v-for="(output, index) in nodeData.output"
-            :port-id="{ nodeName: nodeData.name, isInput: false, portIndex: index }" :node-data="nodeData"
-            ref="output-ports" />
+        <div class="ports outputs" :style="{ '--port-flex': calculateFlex(nodeData.outPorts.length) }">
+          <FunctionNodePort v-for="[key, port] in nodeData.outPorts" :key="key" :portData="port" :pageId="pageId"
+            :nodeId="nodeData.id" ref="output-ports" />
         </div>
       </div>
       <div class="node-controls">
@@ -28,58 +28,36 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, useTemplateRef } from "vue";
 import { useDraggable } from "./useDraggable";
 import FunctionNodePort from "./FunctionNodePort.vue";
+import { useCustomFunctionPagesStore } from "@/stores/useCustomFunctionPagesStore";
 
-export default {
-  components: {
-    FunctionNodePort
+const props = defineProps({
+  pageId: {
+    required: true
   },
-  props: {
-    cfData: {
-      required: true
-    },
-    nodeData: {
-      type: Object,
-      required: true
-    },
-  },
-  mounted() {
-    this.position = this.nodeData.position ?? { x: 100, y: 100 }
-  },
-  setup(props) {
-    const position = ref({ x: 0, y: 0 });
-    const inputPorts = useTemplateRef("input-ports")
-    const outputPorts = useTemplateRef("output-ports")
-    // Draggable page header
-    const { onMouseDown: onHeaderMouseDown } = useDraggable({
-      onDrag: (dx, dy) => {
-        position.value.x += dx;
-        position.value.y += dy;
-        updateConnections();
-      },
-    });
+  nodeData: {
+    type: Object,
+    required: true
+  }
+})
 
-    const updateConnections = () => {
-      inputPorts.value.forEach(e => e.updateConnections())
-      outputPorts.value.forEach(e => e.updateConnections())
-    }
+const customFunctionPagesStore = useCustomFunctionPagesStore()
 
-    // Calculate flex factor for ports
-    const calculateFlex = (count) => {
-      const maxPorts = Math.max(props.nodeData.params.length, props.nodeData.output.length) || 1;
-      return count / maxPorts;
-    };
-
-    return {
-      position,
-      onHeaderMouseDown,
-      calculateFlex,
-    };
+const { onMouseDown: onHeaderMouseDown } = useDraggable({
+  onDrag: (dx, dy) => {
+    customFunctionPagesStore.offsetNodePosition(props.pageId, props.nodeData.id, dx, dy)
   },
+});
+
+// Calculate flex factor for ports
+const calculateFlex = (count) => {
+  const maxPorts = Math.max(props.nodeData.inPorts.length, props.nodeData.outPorts.length) || 1;
+  return count / maxPorts;
 };
+
 </script>
 
 <style scoped>

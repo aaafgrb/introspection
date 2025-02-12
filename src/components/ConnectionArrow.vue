@@ -2,85 +2,65 @@
 
 <template>
   <div class="arrow-connection">
-    <div class="line" ref="line">
+    <div class="line"
+      :style="{ transform: `rotate(${r.ang}deg)`, left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px` }">
       <!-- <div class="text">default</div> -->
-      <div class="arrow" :class="needSwap ? 'arrow-fw' : 'arrow-bw'"></div>
+      <div class="arrow" :class="r.needSwap ? 'arrow-fw' : 'arrow-bw'"></div>
     </div>
   </div>
 </template>
 
-<script>
-import { ref, useTemplateRef } from 'vue';
+<script setup>
+import { useCustomFunctionPagesStore } from '@/stores/useCustomFunctionPagesStore';
+import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
 
-export default {
-  props: {
-    from: {
-      type: Object,
-      required: true,
-    },
-    to: {
-      type: Object,
-      required: true,
-    }
+const props = defineProps({
+  pageId: {
+    required: true
   },
-  mounted() {
-    this.updateLine();
-  },
-  updated() {
-    this.updateLine();
-  },
-  expose: ['updateLine'],
-  setup(props) {
-    const line = useTemplateRef("line")
-    const needSwap = ref(false);
-
-    const updateLine = () => {
-      var W = 2;
-
-      var fromBStartY = props.from.nodePosition.y + props.from.portOffset.y
-      var fromBStartX = props.from.nodePosition.x + props.from.portOffset.x
-      var toBStartY = props.to.nodePosition.y + props.to.portOffset.y
-      var toBStartX = props.to.nodePosition.x + props.to.portOffset.x
-      var fromBWidth = props.from.width
-      var fromBHeight = props.from.height
-      var toBWidth = props.to.width
-      var toBHeight = props.to.height
-
-      var fT = fromBStartY + fromBHeight * 0.5
-      var tT = toBStartY + toBHeight * 0.5
-      var fL = fromBStartX + fromBWidth * 0.5
-      var tL = toBStartX + toBWidth * 0.5
-
-      var CA = Math.abs(tT - fT);
-      var CO = Math.abs(tL - fL);
-      var H = Math.sqrt(CA * CA + CO * CO);
-      var ANG = 180 / Math.PI * Math.acos(CO / H);
-
-      if ((fT >= tT || fL >= tL) && (tT >= fT || tL >= fL)) {
-        ANG *= -1;
-      }
-
-      var top = (tT + fT) / 2 - W / 2;
-      var left = (tL + fL) / 2 - H / 2;
-
-      needSwap.value = (fL > tL || (fL == tL && fT < tT));
-
-      line.value.style["-webkit-transform"] = 'rotate(' + ANG + 'deg)';
-      line.value.style["-moz-transform"] = 'rotate(' + ANG + 'deg)';
-      line.value.style["-ms-transform"] = 'rotate(' + ANG + 'deg)';
-      line.value.style["-o-transform"] = 'rotate(' + ANG + 'deg)';
-      line.value.style["-transform"] = 'rotate(' + ANG + 'deg)';
-      line.value.style.top = top + 'px';
-      line.value.style.left = left + 'px';
-      line.value.style.width = H + 'px';
-    }
-
-    return {
-      updateLine,
-      needSwap,
-    }
+  connectionData: {
+    type: Object,
+    required: true
   }
-};
+})
+
+const customFunctionPagesStore = useCustomFunctionPagesStore()
+
+const { getNode, getPort } = storeToRefs(customFunctionPagesStore)
+
+const inNode = getNode.value(props.pageId, props.connectionData.inNodeId)
+const outNode = getNode.value(props.pageId, props.connectionData.outNodeId)
+
+const inPort = getPort.value(props.pageId, props.connectionData.inNodeId, true, props.connectionData.inPortId)
+const outPort = getPort.value(props.pageId, props.connectionData.outNodeId, false, props.connectionData.outPortId)
+
+//const { ang, left, top, width, needSwap } = computed(() => {
+const r = computed(() => {
+  var W = 2;
+
+  var fT = outNode.component.position.y + outPort.component.offset.y
+  var fL = outNode.component.position.x + outPort.component.offset.x
+  var tT = inNode.component.position.y + inPort.component.offset.y
+  var tL = inNode.component.position.x + inPort.component.offset.x
+
+  var CA = Math.abs(tT - fT);
+  var CO = Math.abs(tL - fL);
+  var H = Math.sqrt(CA * CA + CO * CO);
+  var ANG = 180 / Math.PI * Math.acos(CO / H);
+
+  if ((fT >= tT || fL >= tL) && (tT >= fT || tL >= fL)) {
+    ANG *= -1;
+  }
+
+  var top = (tT + fT) / 2 - W / 2;
+  var left = (tL + fL) / 2 - H / 2;
+
+  var needSwap = (fL > tL || (fL == tL && fT < tT));
+
+  return { ang: ANG, left, top, width: H, needSwap }
+})
+
 </script>
 
 <style scoped>
