@@ -1,11 +1,9 @@
 <template>
   <div class="port">
-    <span class="handle" :class="portData.component.style" @click="mouseclick" ref="handle"></span>
+    <span class="handle" :class="{ beingConnected: portData.component.beingConnected }" @click="mouseclick"
+      ref="handle"></span>
     {{ portData.data.var ?? portData.data.val ?? "undefined" }}
   </div>
-  <!-- <Teleport v-if="portId.isInput && from && to && cfData.connectionsArea.value" :to="cfData.connectionsArea.value">
-    <ConnectionArrow ref="connectionArrow" :from="from" :to="to" />
-  </Teleport> -->
 </template>
 
 <script setup>
@@ -52,27 +50,10 @@ const updatePortOffset = () => {
 }
 
 const mouseclick = () => {
-  customFunctionPageStore.portCallbackClick(props.pageId, props.pageId, props.portData.id)
+  customFunctionPageStore.portCallbackClick(props.pageId, props.nodeId, props.portData.isInput, props.portData.id)
 }
 
 </script>
-
-<!-- 
-  props.cfData.emitter.on("start_connect", function (hitPortId) {
-    if (hitPortId.isInput == props.portId.isInput) {
-      classObject["wrong-io-type"] = true
-      classObject["being-dragged-target"] = hitPortId == props.portId
-    } else {
-      classObject["dragging"] = true
-    }
-  })
-
-  props.cfData.emitter.on("stop_connect", e => {
-    for (let key in classObject) {
-      classObject[key] = false
-    }
-  }) 
--->
 
 <style scoped>
 .port {
@@ -110,36 +91,33 @@ const mouseclick = () => {
 
 /*------------------connecting ports---------------------*/
 
-.dragging {
+.custom-function-page.connecting-ports .handle {
   transform: scale(1.2);
   background-color: var(--port-color);
   animation: pulse 1s infinite
 }
 
-.dragging:hover {
-  transform: scale(1.6) !important;
+.custom-function-page.connecting-ports .handle:hover {
+  transform: scale(1.6);
   animation: none
 }
 
-
-.handle.being-dragged-target {
-  transform: scale(1.6);
+.custom-function-page.connecting-ports .handle.beingConnected {
+  transform: scale(1.3) !important;
   background-color: var(--port-cancel-color) !important;
-  animation: pulse 10s infinite
+  animation: pulse 10s infinite !important
 }
 
-.handle.wrong-io-type {
+.custom-function-page.connecting-output .ports.outputs .handle {
   background-color: var(--port-off-color);
-  ;
+  transform: scale(1);
+  animation: none;
 }
 
-.handle.wrong-io-type:hover {
-  transform: scale(1) !important
-}
-
-.wrong-data-type {
-  background-color: var(--port-warn-color);
-  animation: pulse 1s infinite
+.custom-function-page.connecting-input .ports.inputs .handle {
+  background-color: var(--port-off-color);
+  transform: scale(1);
+  animation: none;
 }
 
 /*--------------------------------------------------*/

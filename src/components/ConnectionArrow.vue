@@ -29,20 +29,20 @@ const customFunctionPagesStore = useCustomFunctionPagesStore()
 
 const { getNode, getPort } = storeToRefs(customFunctionPagesStore)
 
-const inNode = getNode.value(props.pageId, props.connectionData.inNodeId)
-const outNode = getNode.value(props.pageId, props.connectionData.outNodeId)
+const inNode = computed(() => getNode.value(props.pageId, props.connectionData.inNodeId))
+const outNode = computed(() => getNode.value(props.pageId, props.connectionData.outNodeId))
 
-const inPort = getPort.value(props.pageId, props.connectionData.inNodeId, true, props.connectionData.inPortId)
-const outPort = getPort.value(props.pageId, props.connectionData.outNodeId, false, props.connectionData.outPortId)
+const inPort = computed(() => getPort.value(props.pageId, props.connectionData.inNodeId, true, props.connectionData.inPortId))
+const outPort = computed(() => getPort.value(props.pageId, props.connectionData.outNodeId, false, props.connectionData.outPortId))
 
 //const { ang, left, top, width, needSwap } = computed(() => {
 const r = computed(() => {
   var W = 2;
 
-  var fT = outNode.component.position.y + outPort.component.offset.y
-  var fL = outNode.component.position.x + outPort.component.offset.x
-  var tT = inNode.component.position.y + inPort.component.offset.y
-  var tL = inNode.component.position.x + inPort.component.offset.x
+  var fT = outNode.value.component.position.y + outPort.value.component.offset.y
+  var fL = outNode.value.component.position.x + outPort.value.component.offset.x
+  var tT = inNode.value.component.position.y + inPort.value.component.offset.y
+  var tL = inNode.value.component.position.x + inPort.value.component.offset.x
 
   var CA = Math.abs(tT - fT);
   var CO = Math.abs(tL - fL);

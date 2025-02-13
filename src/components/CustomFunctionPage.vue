@@ -1,5 +1,5 @@
 <template>
-  <div class="custom-function-page" :class="{ minimized }" :style="{
+  <div class="custom-function-page" :class="connectionClass" :style="{
     width: minimized ? '200px' : `${pageData.component.dimensions.width}px`,
     height: minimized ? '40px' : `${pageData.component.dimensions.height}px`,
     zIndex: pageData.component.zIndex,
@@ -25,12 +25,12 @@
     <!-- Resize Handle (Hidden When Minimized) -->
     <div v-show="!minimized" class="resize-handle" @mousedown="onResizeMouseDown">
     </div>
-    <!-- <CustomFunctionSidebar /> -->
+    <!-- <CustomFunctionSidebar :pageId="pageData.id" /> -->
   </div>
 </template>
 
 <script setup>
-import { ref, watch, useTemplateRef, onMounted } from "vue";
+import { ref, watch, useTemplateRef, onMounted, computed } from "vue";
 import { useDraggable } from "./useDraggable";
 import DraggableBackground from "./DraggableBackground.vue";
 import FunctionNode from "./FunctionNode.vue";
@@ -54,7 +54,7 @@ const toggleMinimized = () => {
 
 const onContextMenu = (e) => {
   e.preventDefault();
-  //cfData.cancelConnect();
+  customFunctionPageStore.pageRightClick(props.pageData.id, e)
 }
 
 // Draggable page header
@@ -70,6 +70,14 @@ const { onMouseDown: onResizeMouseDown } = useDraggable({
     customFunctionPageStore.offsetPageDimensions(props.pageData.id, dx, dy)
   },
 });
+
+const connectionClass = computed(() => {
+  if (props.pageData.component.connectingPort) {
+    return props.pageData.component.connectingPort.isInput ?
+      { 'connecting-ports': true, 'connecting-input': true } :
+      { 'connecting-ports': true, 'connecting-output': true }
+  }
+})
 </script>
 
 <style scoped>
@@ -79,9 +87,6 @@ const { onMouseDown: onResizeMouseDown } = useDraggable({
   border: 2px solid var(--primary-color);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   user-select: none;
-}
-
-.custom-function-page.minimized {
   overflow: hidden;
 }
 

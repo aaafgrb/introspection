@@ -44,6 +44,7 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
           position: { x: 0, y: 0 },
           dimensions: { width: 400, height: 300 },
           xIndex: 0,
+          connectingPort: null,
         }
       }
       this.pages.set(page.id, page)
@@ -97,6 +98,14 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
       p.height = Math.max(p.height + dHeight, 150);
     },
 
+    pageRightClick(pageId, _e) {
+      //clear connecting port
+      let page = this.getPage(pageId)
+      if (!page.component.connectingPort) return
+      this.getPort(pageId, page.component.connectingPort.nodeId, page.component.connectingPort.isInput, page.component.connectingPort.portId).component.beingConnected = false
+      page.component.connectingPort = null
+    },
+
     //------------------------------NODE--------------------------------------//
     addNode(pageId, nodeData) {
       //create node object
@@ -141,12 +150,7 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
         data: portData,
         component: {
           offset: { x: 0, y: 0 },
-          style: {
-            "dragging": false,
-            "being-dragged-target": false,
-            "wrong-io-type": false,
-            "wrong-data-type": false,
-          },
+          beingConnected: false,
         }
       }
       if (isInput)
@@ -162,14 +166,43 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
       p.y = y
     },
 
+    portCallbackClick(pageId, nodeId, isInput, portId) {
+      let page = this.getPage(pageId)
+
+      if (page.component.connectingPort) { //if there is already a connection being made
+        if (portId != page.component.connectingPort.portId) { //if the nodes are different
+          if (isInput != page.component.connectingPort.isInput) { //if the in/out types are different
+            //create the connection
+            if (isInput) this.addConnection(pageId, nodeId, portId, page.component.connectingPort.nodeId, page.component.connectingPort.portId)
+            else this.addConnection(pageId, page.component.connectingPort.nodeId, page.component.connectingPort.portId, nodeId, portId,)
+          }
+        } else if (isInput) { //if its the same port and it is input
+          //remove the connections from that port
+          this.removeConnection(pageId, portId)
+        }
+
+        //clear connecting port
+        this.getPort(pageId, page.component.connectingPort.nodeId, page.component.connectingPort.isInput, page.component.connectingPort.portId).component.beingConnected = false
+        page.component.connectingPort = null
+      } else { //if there is no connection being made
+        //add connecting port
+        page.component.connectingPort = { nodeId, isInput, portId }
+        this.getPort(pageId, nodeId, isInput, portId).component.beingConnected = true
+      }
+    },
+
     //------------------------------CONNECTION--------------------------------------//
     addConnection(pageId, inNodeId, inPortId, outNodeId, outPortId) {
       const connection = {
-        id: this._newId(),
+        id: inPortId,
         inNodeId, inPortId, outNodeId, outPortId
       }
       this.getPage(pageId).connections.set(connection.id, connection)
       return connection;
+    },
+
+    removeConnection(pageId, inPortId) {
+      this.getPage(pageId).connections.delete(inPortId)
     }
   }
 })
