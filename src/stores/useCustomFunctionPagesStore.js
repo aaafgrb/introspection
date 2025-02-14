@@ -6,6 +6,7 @@ import { toRaw } from 'vue'
 export const useCustomFunctionPagesStore = defineStore('custom-function-pages', {
   state: () => (
     {
+      draggableBackgroundTemplate: null,
       pages: new Map(),
       _currentId: 0,
     }
@@ -21,6 +22,11 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
   actions: {
     _newId() { return this._currentId++ },
 
+    //---------------------------BACKGROUND-----------------------------------//
+    setDraggableBackgroundTemplate(template) {
+      this.draggableBackgroundTemplate = template
+    },
+
     //------------------------------PAGE--------------------------------------//
     addPage(pageName, functionName) {
       //load function definition
@@ -32,6 +38,8 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
       }
       def = structuredClone(toRaw(def))
 
+      let sPos = Math.round(Math.random() * 50) * 10
+
       //create page object
       const page = {
         id: this._newId(),
@@ -41,7 +49,8 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
         nodes: new Map(),
         connections: new Map(),
         component: {
-          position: { x: 0, y: 0 },
+          startPosition: { x: sPos, y: sPos },
+          position: { x: sPos, y: sPos },
           dimensions: { width: 400, height: 300 },
           xIndex: 0,
           connectingPort: null,
@@ -58,10 +67,10 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
         x.inPorts.forEach(y => {
           if (y.data.ref) { //if it receives data from other node
             //find that node 
-            let oNode = Array.from(page.nodes).find(([_, z]) => z.name == y.data.ref)[1]
+            let oNode = [...page.nodes].find(([_, z]) => z.name == y.data.ref)[1]
 
             //get/add the output port of that variable
-            let oPort = Array.from(oNode.outPorts).find(([_, z]) => z.var == y.data.var)
+            let oPort = [...oNode.outPorts].find(([_, z]) => z.data.var == y.data.var)
             oPort = oPort ? oPort[1] : this.addPort(page.id, oNode.id, false, { var: y.data.var })
 
             //create a connection between those ports
@@ -70,7 +79,39 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
         })
       )
 
+      //fix node positions
+      let xHeight = []
+      let offset = { x: 300, y: 300 }
+      let alreadyPassedNodes = [];
+      let notEndNodes = [...page.connections].map(([_, e]) => e.outNodeId)
+      let endNodes = [...page.nodes].filter(([k, _]) => !notEndNodes.includes(k))
+
+      const iterate = (x, id) => {
+        if (alreadyPassedNodes.includes(id)) return;
+        let n = page.nodes.get(id)
+        let h = xHeight[x] ?? 0
+        n.component.position.x = -offset.x * x
+        n.component.position.y = offset.y * h
+        alreadyPassedNodes.push(id)
+        xHeight[x] = h + 1
+        n.inPorts.forEach((_v, k, _m) => {
+          if (page.connections.has(k)) {
+            iterate(x + 1, page.connections.get(k).outNodeId)
+          }
+        })
+      }
+
+      endNodes.forEach(([k, v]) => {
+        iterate(0, k)
+        xHeight[0] = xHeight.max
+      })
+
+
       return page;
+    },
+
+    removePage(pageId) {
+      this.pages.delete(pageId)
     },
 
     setPagePosition(pageId, x, y) {
@@ -104,6 +145,25 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
       if (!page.component.connectingPort) return
       this.getPort(pageId, page.component.connectingPort.nodeId, page.component.connectingPort.isInput, page.component.connectingPort.portId).component.beingConnected = false
       page.component.connectingPort = null
+    },
+
+    focusFunctionPage(pageId) {
+      let p = this.getPage(pageId).component
+      this.draggableBackgroundTemplate.setPosition(
+        -(p.position.x + p.dimensions.width / 2 - window.innerWidth / 2),
+        -(p.position.y + p.dimensions.height / 2 - window.innerHeight / 2));
+    },
+
+    resetFunctionPagePosition(pageId) {
+      let p = this.getPage(pageId).component
+      p.position.x = p.startPosition.x
+      p.position.y = p.startPosition.y
+      p.dimensions.width = 400
+      p.dimensions.height = 300
+    },
+
+    closeFunctionPage(pageId) {
+      this.removePage(pageId)
     },
 
     //------------------------------NODE--------------------------------------//

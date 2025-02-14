@@ -7,13 +7,13 @@
     <div class="sidebar-content" v-if="!isRetracted">
       <div class="config-item">
         <label>Page Name:</label>
-        <input ref="nameInput" type="text" :value="name">
+        <input type="text" :value="pageData.name">
         <button @click="saveName">Save</button>
       </div>
 
       <div class="config-item function-config">
         <label>Function Name:</label>
-        <input ref="customFunctionNameInput" type="text" :value="customFunctionName">
+        <input type="text" :value="pageData.functionName">
         <button @click="loadFunction">Load</button>
         <button @click="saveFunction">Save</button>
       </div>
@@ -21,57 +21,33 @@
   </div>
 </template>
 
-<script>
-import { useTemplateRef } from 'vue';
 
-export default {
-  props: {
-    cfData: {
-      type: Object,
-      required: true
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-    customFunctionName: {
-      type: String,
-      required: true,
-    }
-  },
-  data() {
-    return {
-      isRetracted: false,
-    };
-  },
-  methods: {
-    toggleSidebar() {
-      this.isRetracted = !this.isRetracted;
-    },
-  },
-  emits: ['change-name'],
-  setup(props, { emit }) {
-    const customFunctionNameInput = useTemplateRef("customFunctionNameInput")
-    const nameInput = useTemplateRef("nameInput")
+<script setup>
+import { ref } from 'vue';
+const props = defineProps({
+  pageData: {
+    type: Object,
+    required: true
+  }
+})
 
-    const saveFunction = () => {
+const isRetracted = ref(false)
+const toggleSidebar = () => {
+  isRetracted.value = !isRetracted.value;
+}
 
-    }
+const saveFunction = () => {
 
-    const saveName = () => {
-      emit('change-name', nameInput.value.value);
-    }
+}
+const loadFunction = () => {
 
-    const loadFunction = () => {
+}
 
-    }
-    return {
-      saveFunction,
-      saveName,
-      loadFunction,
-    }
-  },
-};
+const saveName = () => {
+
+}
+
+
 </script>
 
 <style scoped>

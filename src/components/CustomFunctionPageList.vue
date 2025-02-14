@@ -1,40 +1,38 @@
 <template>
   <div class="function-page-list">
-    <div v-for="(page, index) in sidebarStore.openPages" :key="page.id" class="function-page-item"
-      @click="sidebarStore.focusFunctionPage(index)" @contextmenu="event => contextMenu(event, index)">
-      <span class="function-name">{{ page.name }}</span>
+    <div v-for="[key, page] in pages" :key="key" class="function-page-item"
+      @click="customFunctionPagesStore.focusFunctionPage(page.id)" @contextmenu="event => contextMenu(event, page.id)">
+      <span class="function-name">{{ page.pageName }}</span>
     </div>
 
-    <p v-if="sidebarStore.openPages.length === 0" class="empty-text">No open function pages</p>
+    <p v-if="pages.size == 0" class="empty-text">No open function pages</p>
 
     <button class="add-btn" @click="addFunctionPage">+ Add Function Page</button>
   </div>
 </template>
 
-<script>
+<script setup>
+import { useCustomFunctionPagesStore } from "@/stores/useCustomFunctionPagesStore";
 import { useGlobalSidebarStore } from "@/stores/useGlobalSidebarStore";
+import { storeToRefs } from "pinia";
 import { inject } from "vue";
 
-export default {
-  setup() {
-    const sidebarStore = useGlobalSidebarStore();
+const sidebarStore = useGlobalSidebarStore();
+const customFunctionPagesStore = useCustomFunctionPagesStore()
+const { pages } = storeToRefs(customFunctionPagesStore)
 
-    function addFunctionPage() {
-      sidebarStore.openFunctionPage();
-    }
+const addFunctionPage = () => {
+  customFunctionPagesStore.addPage("New Page", "test")
+}
+const openContextMenu = inject("openContextMenu")
+const contextMenu = (event, pageId) => {
+  openContextMenu(event, [
+    { label: "Focus on", callback: () => { customFunctionPagesStore.focusFunctionPage(pageId) } },
+    { label: "Reset position", callback: () => { customFunctionPagesStore.resetFunctionPagePosition(pageId) } },
+    { label: "Delete", callback: () => { customFunctionPagesStore.closeFunctionPage(pageId) } },
+  ])
+}
 
-    const openContextMenu = inject("openContextMenu")
-    const contextMenu = (event, index) => {
-      openContextMenu(event, [
-        { label: "Focus on", callback: () => { sidebarStore.focusFunctionPage(index) } },
-        { label: "Reset position", callback: () => { sidebarStore.resetFunctionPagePosition(index) } },
-        { label: "Delete", callback: () => { sidebarStore.closeFunctionPage(index) } },
-      ])
-    }
-
-    return { sidebarStore, addFunctionPage, contextMenu };
-  },
-};
 </script>
 
 <style scoped>

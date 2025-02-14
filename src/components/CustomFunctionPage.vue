@@ -25,7 +25,7 @@
     <!-- Resize Handle (Hidden When Minimized) -->
     <div v-show="!minimized" class="resize-handle" @mousedown="onResizeMouseDown">
     </div>
-    <!-- <CustomFunctionSidebar :pageId="pageData.id" /> -->
+    <CustomFunctionSidebar :pageData="pageData" />
   </div>
 </template>
 
@@ -87,7 +87,6 @@ const connectionClass = computed(() => {
   border: 2px solid var(--primary-color);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   user-select: none;
-  overflow: hidden;
 }
 
 .page-header {

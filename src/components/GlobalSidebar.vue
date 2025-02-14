@@ -24,56 +24,45 @@
   </div>
 </template>
 
-<script>
-import { useTemplateRef } from 'vue';
+<script setup>
+import { ref, shallowRef, useTemplateRef } from 'vue';
 import GlobalCommands from './GlobalCommands.vue';
 import CustomFunctionPageList from './CustomFunctionPageList.vue';
 
-export default {
-  components: { GlobalCommands, CustomFunctionPageList },
-  data() {
-    return {
-      isRetracted: false,
-      items: [
-        { header: 'Control', component: "GlobalCommands", collapsed: false },
-        { header: 'Custom Function Pages', component: "CustomFunctionPageList", collapsed: false },
-        { header: 'Item 3', component: "GlobalCommands", collapsed: false },
-        { header: 'Item 4', component: "GlobalCommands", collapsed: false },
-        { header: 'Item 5', component: "GlobalCommands", collapsed: false },
-        { header: 'Item 6', component: "GlobalCommands", collapsed: false },
-        { header: 'Item 7', component: "GlobalCommands", collapsed: false },
-        { header: 'Item 8', component: "GlobalCommands", collapsed: false },
-        { header: 'Item 9', component: "GlobalCommands", collapsed: false },
-        { header: 'Item 10', component: "GlobalCommands", collapsed: false },
-        { header: 'Item 11', component: "GlobalCommands", collapsed: false },
-      ],
-    };
-  },
-  setup() {
-    const itemRefs = useTemplateRef("item-refs")
-    return {
-      itemRefs
-    }
-  },
-  methods: {
-    toggleSidebar() {
-      this.isRetracted = !this.isRetracted;
-    },
-    toggleItem(index) {
-      if (this.isRetracted) {
-        this.isRetracted = false
-        this.items[index].collapsed = false
-        setTimeout(_ => {
-          this.itemRefs[index].scrollIntoView({ behavior: "smooth", block: "start" })
-          console.log("asd")
-        }, 200)
-      } else {
-        this.items[index].collapsed = !this.items[index].collapsed;
-      }
-    },
-  },
-};
+const isRetracted = ref(false)
+const items = shallowRef([
+  { header: 'Control', component: GlobalCommands, collapsed: false },
+  { header: 'Custom Function Pages', component: CustomFunctionPageList, collapsed: false },
+  { header: 'Item 3', component: GlobalCommands, collapsed: false },
+  { header: 'Item 4', component: GlobalCommands, collapsed: false },
+  { header: 'Item 5', component: GlobalCommands, collapsed: false },
+  { header: 'Item 6', component: GlobalCommands, collapsed: false },
+  { header: 'Item 7', component: GlobalCommands, collapsed: false },
+  { header: 'Item 8', component: GlobalCommands, collapsed: false },
+  { header: 'Item 9', component: GlobalCommands, collapsed: false },
+  { header: 'Item 10', component: GlobalCommands, collapsed: false },
+  { header: 'Item 11', component: GlobalCommands, collapsed: false },
+])
+
+const toggleSidebar = () => {
+  isRetracted.value = !isRetracted.value;
+}
+
+const itemRefs = useTemplateRef("item-refs")
+const toggleItem = (index) => {
+  if (isRetracted.value) {
+    isRetracted.value = false
+    items.value[index].collapsed = false
+    setTimeout(_ => {
+      itemRefs.value[index].scrollIntoView({ behavior: "smooth", block: "start" })
+    }, 200)
+  } else {
+    items.value[index].collapsed = !items.value[index].collapsed;
+  }
+}
+
 </script>
+
 <style scoped>
 .sidebar {
   width: 250px;

@@ -8,7 +8,7 @@
   <ContextMenu ref="context-menu" />
 </template>
 
-<script>
+<script setup>
 import { useGlobalSidebarStore } from "@/stores/useGlobalSidebarStore";
 import CustomFunctionPage from "@/components/CustomFunctionPage.vue";
 import GlobalSidebar from "@/components/GlobalSidebar.vue";
@@ -19,37 +19,23 @@ import { useFunctionRegistryStore } from "@/stores/useFunctionRegistryStore";
 import { useCustomFunctionPagesStore } from "@/stores/useCustomFunctionPagesStore";
 import { storeToRefs } from "pinia";
 
-export default {
-  components: {
-    CustomFunctionPage,
-    GlobalSidebar,
-    DraggableBackground,
-    ContextMenu
-  },
-  beforeCreate() {
-    this.functionRegistryStore.init()
-  },
-  setup() {
-    const sidebarStore = useGlobalSidebarStore();
-    const functionRegistryStore = useFunctionRegistryStore();
-    const customFunctionPagesStore = useCustomFunctionPagesStore();
+const sidebarStore = useGlobalSidebarStore();
+const functionRegistryStore = useFunctionRegistryStore();
+const customFunctionPagesStore = useCustomFunctionPagesStore();
 
-    customFunctionPagesStore.addPage("test", "test")
+functionRegistryStore.init()
 
-    const { pages } = storeToRefs(customFunctionPagesStore)
+const { pages } = storeToRefs(customFunctionPagesStore)
 
-    console.log(pages.value)
+console.log(pages.value)
 
-    const contextMenu = useTemplateRef("context-menu")
-    const openContextMenu = (...args) => contextMenu.value.openMenu(...args);
-    provide("openContextMenu", openContextMenu)
+const contextMenu = useTemplateRef("context-menu")
+const openContextMenu = (...args) => contextMenu.value.openMenu(...args);
+provide("openContextMenu", openContextMenu)
 
-    const draggableBackgroundTemplate = useTemplateRef("draggable-background")
-    sidebarStore.setDraggableBackgroundTemplate(draggableBackgroundTemplate)
-    const customFunctionPagesTemplate = useTemplateRef("custom-function-pages")
-    sidebarStore.setCustomFunctionPagesTemplate(customFunctionPagesTemplate)
+const draggableBackgroundTemplate = useTemplateRef("draggable-background")
+onMounted(() => {
+  customFunctionPagesStore.setDraggableBackgroundTemplate(draggableBackgroundTemplate)
+})
 
-    return { sidebarStore, functionRegistryStore, customFunctionPagesStore, pages, openContextMenu };
-  },
-};
 </script>
