@@ -10,12 +10,12 @@
     <div class="node-content">
       <div class="ports-container">
         <!-- Input Ports -->
-        <div class="ports inputs" :style="{ '--port-flex': calculateFlex(nodeData.inPorts.length) }">
+        <div class="ports inputs" :style="{ '--port-flex': calculateFlex(nodeData.inPorts.size) }">
           <FunctionNodePort v-for="[key, port] in nodeData.inPorts" :key="key" :portData="port" :pageId="pageId"
             :nodeId="nodeData.id" ref="input-ports" />
         </div>
         <!-- Output Ports -->
-        <div class="ports outputs" :style="{ '--port-flex': calculateFlex(nodeData.outPorts.length) }">
+        <div class="ports outputs" :style="{ '--port-flex': calculateFlex(nodeData.outPorts.size) }">
           <FunctionNodePort v-for="[key, port] in nodeData.outPorts" :key="key" :portData="port" :pageId="pageId"
             :nodeId="nodeData.id" ref="output-ports" />
         </div>

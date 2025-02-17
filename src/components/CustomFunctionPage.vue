@@ -49,7 +49,7 @@ const customFunctionPageStore = useCustomFunctionPagesStore()
 const minimized = ref(false);
 
 const toggleMinimized = () => {
-  minimized = !minimized;
+  minimized.value = !minimized.value;
 }
 
 const onContextMenu = (e) => {

@@ -140,6 +140,13 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
       p.height = Math.max(p.height + dHeight, 150);
     },
 
+    setFunctionPageName(pageId, value) {
+      let p = this.getPage(pageId)
+      if (p.pageName != value) {
+        p.pageName = value
+      }
+    },
+
     pageRightClick(pageId, _e) {
       //clear connecting port
       let page = this.getPage(pageId)
@@ -172,6 +179,12 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
       p.position.y = p.startPosition.y
       p.dimensions.width = 400
       p.dimensions.height = 300
+    },
+
+    setFunctionPageDefaultPosition(pageId, x, y) {
+      let p = this.getPage(pageId).component
+      p.startPosition.x = x
+      p.startPosition.y = y
     },
 
     resetAllFunctionPagePositions() {

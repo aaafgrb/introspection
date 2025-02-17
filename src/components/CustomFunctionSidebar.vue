@@ -6,16 +6,20 @@
     </div>
     <div class="sidebar-content" v-if="!isRetracted">
       <div class="config-item">
-        <label>Page Name:</label>
-        <input type="text" :value="pageData.name">
+        <span>Page Name:</span>
+        <input ref="pageNameInput" type="text" :value="pageData.pageName">
         <button @click="saveName">Save</button>
       </div>
 
       <div class="config-item function-config">
-        <label>Function Name:</label>
-        <input type="text" :value="pageData.functionName">
+        <span>Function Name:</span>
+        <input ref="functionNameInput" type="text" :value="pageData.functionName">
         <button @click="loadFunction">Load</button>
         <button @click="saveFunction">Save</button>
+      </div>
+
+      <div class="config-item function-config">
+        <button @click="setPosition">Set default position</button>
       </div>
     </div>
   </div>
@@ -23,7 +27,8 @@
 
 
 <script setup>
-import { ref } from 'vue';
+import { useCustomFunctionPagesStore } from '@/stores/useCustomFunctionPagesStore';
+import { ref, useTemplateRef } from 'vue';
 const props = defineProps({
   pageData: {
     type: Object,
@@ -31,7 +36,12 @@ const props = defineProps({
   }
 })
 
-const isRetracted = ref(false)
+const customFunctionPageStore = useCustomFunctionPagesStore()
+
+const pageNameInput = useTemplateRef("pageNameInput")
+const functionNameInput = useTemplateRef("functionNameInput")
+
+const isRetracted = ref(true)
 const toggleSidebar = () => {
   isRetracted.value = !isRetracted.value;
 }
@@ -39,14 +49,21 @@ const toggleSidebar = () => {
 const saveFunction = () => {
 
 }
+
 const loadFunction = () => {
 
 }
 
 const saveName = () => {
-
+  customFunctionPageStore.setFunctionPageName(props.pageData.id, pageNameInput.value.value)
 }
 
+const setPosition = () => {
+  customFunctionPageStore.setFunctionPageDefaultPosition(
+    props.pageData.id,
+    props.pageData.component.position.x,
+    props.pageData.component.position.y)
+}
 
 </script>
 
@@ -78,13 +95,22 @@ const saveName = () => {
   transition: all 0.3s ease;
 }
 
+.sidebar-handle span {
+  color: var(--primary-text-color);
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+
 .sidebar-handle {
   width: 20px;
   height: 42px;
   left: -22px;
   top: -2px;
   background-color: var(--primary-color);
-  color: var(--primary-text-color);
   text-align: center;
   cursor: pointer;
   display: flex;
@@ -107,7 +133,7 @@ const saveName = () => {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-label {
+span {
   font-size: 1rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
