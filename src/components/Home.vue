@@ -9,7 +9,6 @@
 </template>
 
 <script setup>
-import { useGlobalSidebarStore } from "@/stores/useGlobalSidebarStore";
 import CustomFunctionPage from "@/components/CustomFunctionPage.vue";
 import GlobalSidebar from "@/components/GlobalSidebar.vue";
 import DraggableBackground from "@/components/DraggableBackground.vue";
@@ -19,7 +18,6 @@ import { useFunctionRegistryStore } from "@/stores/useFunctionRegistryStore";
 import { useCustomFunctionPagesStore } from "@/stores/useCustomFunctionPagesStore";
 import { storeToRefs } from "pinia";
 
-const sidebarStore = useGlobalSidebarStore();
 const functionRegistryStore = useFunctionRegistryStore();
 const customFunctionPagesStore = useCustomFunctionPagesStore();
 

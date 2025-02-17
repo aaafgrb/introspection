@@ -18,7 +18,7 @@ import { useDraggable } from "./useDraggable";
 import { useZoomable } from "./useZoomable";
 
 export default {
-  expose: ["setPosition"],
+  expose: ["setPosition", "localZoom", "cumulativeZoom"],
   setup() {
     const background = useTemplateRef("background"); // Reference to the background element
     const backgroundPosition = ref({ x: 0, y: 0 });

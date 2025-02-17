@@ -6,20 +6,14 @@
   </div>
 </template>
 
-<script>
-import { useGlobalSidebarStore } from '@/stores/useGlobalSidebarStore';
+<script setup>
+import { useCustomFunctionPagesStore } from '@/stores/useCustomFunctionPagesStore';
 
-export default {
-  setup() {
-    const globalSidebarStore = useGlobalSidebarStore()
-    const resetPositions = () => {
-      globalSidebarStore.resetAllPagesPosition()
-    }
-    return {
-      resetPositions
-    }
-  }
-};
+const customFunctionPagesStore = useCustomFunctionPagesStore()
+const resetPositions = () => {
+  customFunctionPagesStore.resetAllFunctionPagePositions()
+}
+
 </script>
 
 <style scoped>

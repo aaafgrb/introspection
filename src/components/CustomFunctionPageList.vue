@@ -13,11 +13,9 @@
 
 <script setup>
 import { useCustomFunctionPagesStore } from "@/stores/useCustomFunctionPagesStore";
-import { useGlobalSidebarStore } from "@/stores/useGlobalSidebarStore";
 import { storeToRefs } from "pinia";
 import { inject } from "vue";
 
-const sidebarStore = useGlobalSidebarStore();
 const customFunctionPagesStore = useCustomFunctionPagesStore()
 const { pages } = storeToRefs(customFunctionPagesStore)
 

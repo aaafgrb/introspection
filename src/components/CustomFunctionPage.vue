@@ -4,7 +4,7 @@
     height: minimized ? '40px' : `${pageData.component.dimensions.height}px`,
     zIndex: pageData.component.zIndex,
     transform: `translate(${pageData.component.position.x}px, ${pageData.component.position.y}px)`
-  }" ref="page" @mousedown="$emit('interactedWith')">
+  }" ref="page" @mousedown="interactedWith">
     <!-- Header with Minimize Button -->
     <div class="page-header" @mousedown="onHeaderMouseDown">
       <span>{{ pageData.pageName ?? "Unnamed Custom Function" }}</span>
@@ -78,6 +78,10 @@ const connectionClass = computed(() => {
       { 'connecting-ports': true, 'connecting-output': true }
   }
 })
+
+const interactedWith = () => {
+  customFunctionPageStore.bringPageToTop(props.pageData.id)
+}
 </script>
 
 <style scoped>

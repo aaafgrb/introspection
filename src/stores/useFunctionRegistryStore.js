@@ -71,7 +71,6 @@ export const useFunctionRegistryStore = defineStore('function-registry', {
           ]
         }
       )
-      console.log(this.baseFunctions)
     },
     addBaseFunction(name, func, doc = {}) {
       const entry = {

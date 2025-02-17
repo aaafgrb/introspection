@@ -7,6 +7,7 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
   state: () => (
     {
       draggableBackgroundTemplate: null,
+      currentTopPage: null,
       pages: new Map(),
       _currentId: 0,
     }
@@ -52,7 +53,7 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
           startPosition: { x: sPos, y: sPos },
           position: { x: sPos, y: sPos },
           dimensions: { width: 400, height: 300 },
-          xIndex: 0,
+          zIndex: 0,
           connectingPort: null,
         }
       }
@@ -147,11 +148,22 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
       page.component.connectingPort = null
     },
 
+    bringPageToTop(pageId) {
+      if (this.currentTopPage) {
+        if (this.currentTopPage == pageId) return;
+        this.getPage(this.currentTopPage).component.zIndex = 0
+      }
+      this.getPage(pageId).component.zIndex = 1
+      this.currentTopPage = pageId
+    },
+
     focusFunctionPage(pageId) {
       let p = this.getPage(pageId).component
-      this.draggableBackgroundTemplate.setPosition(
-        -(p.position.x + p.dimensions.width / 2 - window.innerWidth / 2),
-        -(p.position.y + p.dimensions.height / 2 - window.innerHeight / 2));
+      let rx = (-p.position.x - p.dimensions.width / 2) * this.draggableBackgroundTemplate.localZoom + window.innerWidth / 2
+      let ry = (-p.position.y - p.dimensions.height / 2) * this.draggableBackgroundTemplate.localZoom + window.innerHeight / 2
+
+      this.draggableBackgroundTemplate.setPosition(rx, ry);
+      this.bringPageToTop(pageId)
     },
 
     resetFunctionPagePosition(pageId) {
@@ -160,6 +172,10 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
       p.position.y = p.startPosition.y
       p.dimensions.width = 400
       p.dimensions.height = 300
+    },
+
+    resetAllFunctionPagePositions() {
+      this.pages.forEach((_v, k, _m) => this.resetFunctionPagePosition(k))
     },
 
     closeFunctionPage(pageId) {
