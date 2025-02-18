@@ -21,6 +21,11 @@
       <div class="config-item function-config">
         <button @click="setPosition">Set default position</button>
       </div>
+
+      <div class="config-item function-config">
+        <button @click="addNode">Add node</button>
+      </div>
+      <FunctionSelector class="function-selector" ref="function-selector" />
     </div>
   </div>
 </template>
@@ -28,13 +33,23 @@
 
 <script setup>
 import { useCustomFunctionPagesStore } from '@/stores/useCustomFunctionPagesStore';
-import { ref, useTemplateRef } from 'vue';
+import { ref, inject, useTemplateRef } from 'vue';
+import FunctionSelector from './FunctionSelector.vue';
 const props = defineProps({
   pageData: {
     type: Object,
     required: true
   }
 })
+
+const functionSelector = useTemplateRef("function-selector")
+const toggleFunctionSelector = (...args) => functionSelector.value.toggleSelector(...args);
+
+const addNode = () => {
+  toggleFunctionSelector((fn) => {
+    console.log(fn)
+  })
+}
 
 const customFunctionPageStore = useCustomFunctionPagesStore()
 
@@ -51,11 +66,13 @@ const saveFunction = () => {
 }
 
 const loadFunction = () => {
-
+  if (confirm('Are you sure you want to load another function in this page?\nUnsaved changes will be lost.')) {
+    customFunctionPageStore.setPageFunction(props.pageData.id, functionNameInput.value.value)
+  }
 }
 
 const saveName = () => {
-  customFunctionPageStore.setFunctionPageName(props.pageData.id, pageNameInput.value.value)
+  customFunctionPageStore.setPageName(props.pageData.id, pageNameInput.value.value)
 }
 
 const setPosition = () => {
@@ -169,5 +186,13 @@ button {
 
 button:hover {
   background-color: var(--secondary-button-hover-color);
+}
+
+.function-selector {
+  position: absolute;
+  width: 100%;
+  height: 98%;
+  top: 0;
+  left: 110%
 }
 </style>
