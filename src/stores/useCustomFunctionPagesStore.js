@@ -147,6 +147,22 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
       }
     },
 
+    setPageDocs(pageId, docs) {
+      let p = this.getPage(pageId)
+      if (docs.input && p.docs.input_type != docs.input) {
+        p.docs.input_type = docs.input
+      }
+      if (docs.output && p.docs.output_type != docs.output) {
+        p.docs.output_type = docs.output
+      }
+      if (docs.description && p.docs.description != docs.description) {
+        p.docs.description = docs.description
+      }
+      if (docs.example && p.docs.example != docs.example) {
+        p.docs.example = docs.example
+      }
+    },
+
     setPageFunction(pageId, functionName) {
       let page = this.getPage(pageId)
 

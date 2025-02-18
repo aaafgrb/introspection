@@ -19,6 +19,20 @@
       </div>
 
       <div class="config-item function-config">
+        <h2>Docs:</h2>
+        <span>input type</span>
+        <input ref="docsInputInput" type="text" :value="pageData.docs.input_type">
+        <span>output type</span>
+        <input ref="docsOutputInput" type="text" :value="pageData.docs.output_type">
+        <span>description</span>
+        <textarea ref="docsDescriptionInput">{{ pageData.docs.description }}
+        </textarea>
+        <span>example</span>
+        <input ref="docsExampleInput" type="text" :value="pageData.docs.example">
+        <button @click="saveDocs">Save</button>
+      </div>
+
+      <div class="config-item function-config">
         <button @click="setPosition">Set default position</button>
       </div>
 
@@ -53,12 +67,26 @@ const addNode = () => {
 
 const customFunctionPageStore = useCustomFunctionPagesStore()
 
-const pageNameInput = useTemplateRef("pageNameInput")
+
 const functionNameInput = useTemplateRef("functionNameInput")
 
 const isRetracted = ref(true)
 const toggleSidebar = () => {
   isRetracted.value = !isRetracted.value;
+}
+
+const docsInputInput = useTemplateRef("docsInputInput")
+const docsOutputInput = useTemplateRef("docsOutputInput")
+const docsDescriptionInput = useTemplateRef("docsDescriptionInput")
+const docsExampleInput = useTemplateRef("docsExampleInput")
+const saveDocs = () => {
+  customFunctionPageStore.setPageDocs(props.pageData.id,
+    {
+      input: docsInputInput.value.value,
+      output: docsOutputInput.value.value,
+      description: docsDescriptionInput.value.value,
+      example: docsExampleInput.value.value,
+    })
 }
 
 const saveFunction = () => {
@@ -71,6 +99,7 @@ const loadFunction = () => {
   }
 }
 
+const pageNameInput = useTemplateRef("pageNameInput")
 const saveName = () => {
   customFunctionPageStore.setPageName(props.pageData.id, pageNameInput.value.value)
 }
@@ -158,7 +187,7 @@ span {
 }
 
 input[type="text"] {
-  padding: 0.5rem;
+  padding: 0.4rem;
   font-size: 1rem;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -168,6 +197,22 @@ input[type="text"] {
 }
 
 input[type="text"]:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+textarea {
+  padding: 0.4rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #333;
+  transition: border 0.3s ease;
+  resize: vertical;
+}
+
+textarea:focus {
   border-color: var(--primary-color);
   outline: none;
 }
