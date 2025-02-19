@@ -15,7 +15,7 @@
 
     <!-- Page Content (Hidden When Minimized) -->
     <div v-show="!minimized" class="page-content" @contextmenu="onContextMenu">
-      <DraggableBackground>
+      <DraggableBackground ref="draggable-background">
         <FunctionNode v-for="[key, node] in pageData.nodes" :nodeData="node" :key="key" :pageId="pageData.id" />
         <ConnectionArrow v-for="[key, connection] in pageData.connections" :key="key" :pageId="pageData.id"
           :connectionData="connection" />
@@ -47,6 +47,11 @@ const props = defineProps({
 
 const customFunctionPageStore = useCustomFunctionPagesStore()
 const minimized = ref(false);
+
+const draggableBackgroundTemplate = useTemplateRef("draggable-background")
+onMounted(() => {
+  customFunctionPageStore.setPageDraggableBackgroundTemplate(props.pageData.id, draggableBackgroundTemplate)
+})
 
 const toggleMinimized = () => {
   minimized.value = !minimized.value;

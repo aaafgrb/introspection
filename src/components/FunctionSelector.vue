@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { ref, computed, defineExpose } from 'vue';
+import { ref, computed } from 'vue';
 import { useFunctionRegistryStore } from '@/stores/useFunctionRegistryStore';
 
 const isOpen = ref(false)

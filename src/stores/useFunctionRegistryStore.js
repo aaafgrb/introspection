@@ -40,11 +40,12 @@ export const useFunctionRegistryStore = defineStore('function-registry', {
         return def.func.length;
       } else {
         def = this.getCustomFunction(name)
-        if (def) return def.definition.output.length
+        if (def) return def.definition.filter(x => x.operation == "input").length
       }
       console.warn(`Function ${name} not found. Was unable to get arity. Returning 0.`)
       return 0;
     },
+    getFunction: (state) => (name) => state.baseFunctions.get(name) ?? state.customFunctions.get(name)
   },
   actions: {
     async init() {

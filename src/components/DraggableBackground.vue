@@ -18,7 +18,7 @@ import { useDraggable } from "./useDraggable";
 import { useZoomable } from "./useZoomable";
 
 export default {
-  expose: ["setPosition", "localZoom", "cumulativeZoom"],
+  expose: ['getPosition', "setPosition", "localZoom", "cumulativeZoom"],
   setup() {
     const background = useTemplateRef("background"); // Reference to the background element
     const backgroundPosition = ref({ x: 0, y: 0 });
@@ -45,6 +45,10 @@ export default {
       backgroundPosition.value.y = y;
     }
 
+    const getPosition = () => {
+      return backgroundPosition.value
+    }
+
     return {
       background,
       backgroundPosition,
@@ -52,6 +56,7 @@ export default {
       onBackgroundMouseDown,
       onWheelZoom,
       setPosition,
+      getPosition,
     };
   },
 };

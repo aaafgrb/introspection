@@ -55,6 +55,7 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
           dimensions: { width: 400, height: 300 },
           zIndex: 0,
           connectingPort: null,
+          draggableBackgroundTemplate: null,
         }
       }
       this.pages.set(page.id, page)
@@ -113,6 +114,11 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
 
     removePage(pageId) {
       this.pages.delete(pageId)
+    },
+
+    setPageDraggableBackgroundTemplate(pageId, template) {
+      let p = this.getPage(pageId).component
+      p.draggableBackgroundTemplate = template
     },
 
     setPagePosition(pageId, x, y) {
@@ -240,6 +246,34 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
       this.addPort(pageId, node.id, false, { var: "output" })
 
       return node;
+    },
+
+    addNodeFromName(pageId, name) {
+      let functionResgistryStore = useFunctionRegistryStore()
+      let def = toRaw(functionResgistryStore.getFunction(name))
+      if (!def) {
+        console.warn(`Could not add node ${name}. Function not found`)
+        return null;
+      }
+
+      const d = {
+        name: `new variable`, //make something to differentiate variables automatically
+        operation: def.name,
+        params: Array(functionResgistryStore.getArity(name)).fill({ val: null })
+      }
+
+      let node = this.addNode(pageId, d)
+
+      let p = this.getPage(pageId).component
+      let background = p.draggableBackgroundTemplate
+      if (background) {
+        let bPos = background.getPosition();
+
+        this.setNodePosition(pageId, node.id,
+          (-bPos.x + p.dimensions.width / 2) * background.localZoom,
+          (-bPos.y + p.dimensions.height / 2) * background.localZoom)
+      }
+      return node
     },
 
     setNodePosition(pageId, nodeId, x, y) {

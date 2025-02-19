@@ -56,14 +56,6 @@ const props = defineProps({
   }
 })
 
-const functionSelector = useTemplateRef("function-selector")
-const toggleFunctionSelector = (...args) => functionSelector.value.toggleSelector(...args);
-
-const addNode = () => {
-  toggleFunctionSelector((fn) => {
-    console.log(fn)
-  })
-}
 
 const customFunctionPageStore = useCustomFunctionPagesStore()
 
@@ -110,6 +102,16 @@ const setPosition = () => {
     props.pageData.component.position.x,
     props.pageData.component.position.y)
 }
+
+const functionSelector = useTemplateRef("function-selector")
+const toggleFunctionSelector = (...args) => functionSelector.value.toggleSelector(...args);
+
+const addNode = () => {
+  toggleFunctionSelector((fn) => {
+    customFunctionPageStore.addNodeFromName(props.pageData.id, fn)
+  })
+}
+
 
 </script>
 
