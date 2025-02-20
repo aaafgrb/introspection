@@ -257,12 +257,14 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
       }
 
       const d = {
-        name: `new variable`, //make something to differentiate variables automatically
+        name: `new variable `, //make something to differentiate variables automatically
         operation: def.name,
         params: Array(functionResgistryStore.getArity(name)).fill({ val: null })
       }
 
       let node = this.addNode(pageId, d)
+
+      node.name = node.name + node.id
 
       let p = this.getPage(pageId).component
       let background = p.draggableBackgroundTemplate
@@ -270,8 +272,8 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
         let bPos = background.getPosition();
 
         this.setNodePosition(pageId, node.id,
-          (-bPos.x + p.dimensions.width / 2) * background.localZoom,
-          (-bPos.y + p.dimensions.height / 2) * background.localZoom)
+          (-bPos.x + p.dimensions.width / 2) / background.localZoom,
+          (-bPos.y + p.dimensions.height / 2) / background.localZoom)
       }
       return node
     },

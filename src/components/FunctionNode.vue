@@ -1,10 +1,10 @@
 <template>
   <div class="function-node"
     :style="{ transform: `translate(${nodeData.component.position.x}px, ${nodeData.component.position.y}px)` }"
-    @mousedown.stop="">
+    @mousedown.stop="" :title="docs.description">
     <!-- header -->
     <div class=" node-header" @mousedown.stop="onHeaderMouseDown">
-      {{ nodeData.name }}
+      {{ `${nodeData.name} : ${nodeData.operation}` }}
     </div>
     <!-- content -->
     <div class="node-content">
@@ -12,12 +12,12 @@
         <!-- Input Ports -->
         <div class="ports inputs" :style="{ '--port-flex': calculateFlex(nodeData.inPorts.size) }">
           <FunctionNodePort v-for="[key, port] in nodeData.inPorts" :key="key" :portData="port" :pageId="pageId"
-            :nodeId="nodeData.id" ref="input-ports" />
+            :title="docs.input_type" :nodeId="nodeData.id" ref="input-ports" />
         </div>
         <!-- Output Ports -->
         <div class="ports outputs" :style="{ '--port-flex': calculateFlex(nodeData.outPorts.size) }">
           <FunctionNodePort v-for="[key, port] in nodeData.outPorts" :key="key" :portData="port" :pageId="pageId"
-            :nodeId="nodeData.id" ref="output-ports" />
+            :title="docs.output_type" :nodeId="nodeData.id" ref="output-ports" />
         </div>
       </div>
       <div class="node-controls">
@@ -29,10 +29,11 @@
 </template>
 
 <script setup>
-import { ref, useTemplateRef } from "vue";
+import { computed, ref, useTemplateRef } from "vue";
 import { useDraggable } from "./useDraggable";
 import FunctionNodePort from "./FunctionNodePort.vue";
 import { useCustomFunctionPagesStore } from "@/stores/useCustomFunctionPagesStore";
+import { useFunctionRegistryStore } from "@/stores/useFunctionRegistryStore";
 
 const props = defineProps({
   pageId: {
@@ -45,6 +46,7 @@ const props = defineProps({
 })
 
 const customFunctionPagesStore = useCustomFunctionPagesStore()
+const functionRegistryStore = useFunctionRegistryStore()
 
 const { onMouseDown: onHeaderMouseDown } = useDraggable({
   onDrag: (dx, dy) => {
@@ -57,6 +59,11 @@ const calculateFlex = (count) => {
   const maxPorts = Math.max(props.nodeData.inPorts.length, props.nodeData.outPorts.length) || 1;
   return count / maxPorts;
 };
+
+const docs = computed(() => {
+  let t = functionRegistryStore.getFunction(props.nodeData.operation)
+  return t ? t.docs : {}
+})
 
 </script>
 

@@ -73,9 +73,9 @@ export const useFunctionRegistryStore = defineStore('function-registry', {
         }
       )
     },
-    addBaseFunction(name, func, doc = {}) {
+    addBaseFunction(name, func, docs = {}) {
       const entry = {
-        name, func, doc
+        name, func, docs
       }
       if (this.baseFunctions.get(name)) {
         console.warn(`Base function ${name} already exists. Overwriting.`)
