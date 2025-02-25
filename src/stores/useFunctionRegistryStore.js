@@ -45,7 +45,8 @@ export const useFunctionRegistryStore = defineStore('function-registry', {
       console.warn(`Function ${name} not found. Was unable to get arity. Returning 0.`)
       return 0;
     },
-    getFunction: (state) => (name) => state.baseFunctions.get(name) ?? state.customFunctions.get(name)
+    getFunction: (state) => (name) => state.baseFunctions.get(name) ?? state.customFunctions.get(name),
+    allFunctionsList: (state) => [...state.baseFunctions, ...state.customFunctions].map(([k, _]) => k)
   },
   actions: {
     async init() {

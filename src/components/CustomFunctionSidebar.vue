@@ -4,7 +4,7 @@
       <span v-if="isRetracted">+</span>
       <span v-else>&gt;</span>
     </div>
-    <div class="sidebar-content" v-if="!isRetracted">
+    <div class="sidebar-content" v-if="!isRetracted" ref="sidebar-content">
       <div class="config-item">
         <span>Page Name:</span>
         <input ref="pageNameInput" type="text" :value="pageData.pageName">
@@ -39,7 +39,6 @@
       <div class="config-item function-config">
         <button @click="addNode">Add node</button>
       </div>
-      <FunctionSelector class="function-selector" ref="function-selector" />
     </div>
   </div>
 </template>
@@ -48,7 +47,7 @@
 <script setup>
 import { useCustomFunctionPagesStore } from '@/stores/useCustomFunctionPagesStore';
 import { ref, inject, useTemplateRef } from 'vue';
-import FunctionSelector from './FunctionSelector.vue';
+import { useFunctionRegistryStore } from '@/stores/useFunctionRegistryStore';
 const props = defineProps({
   pageData: {
     type: Object,
@@ -103,13 +102,22 @@ const setPosition = () => {
     props.pageData.component.position.y)
 }
 
-const functionSelector = useTemplateRef("function-selector")
-const toggleFunctionSelector = (...args) => functionSelector.value.toggleSelector(...args);
+const functionRegistry = useFunctionRegistryStore()
+const openListSelector = inject("openListSelector")
+const sidebarContent = useTemplateRef("sidebar-content")
 
-const addNode = () => {
-  toggleFunctionSelector((fn) => {
+
+const addNode = (event) => {
+  openListSelector(fn => {
     customFunctionPageStore.addNodeFromName(props.pageData.id, fn)
-  })
+  },
+    {
+      x: 270,
+      items: functionRegistry.allFunctionsList,
+      teleport: sidebarContent.value,
+      title: "Select the function"
+    }
+  )
 }
 
 
@@ -233,13 +241,5 @@ button {
 
 button:hover {
   background-color: var(--secondary-button-hover-color);
-}
-
-.function-selector {
-  position: absolute;
-  width: 100%;
-  height: 98%;
-  top: 0;
-  left: 110%
 }
 </style>

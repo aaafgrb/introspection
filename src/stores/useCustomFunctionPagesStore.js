@@ -290,6 +290,22 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
       p.y += dy;
     },
 
+    deleteNode(pageId, nodeId) {
+      const p = this.getPage(pageId)
+      p.connections.forEach((v, k, _m) => {
+        if (v.inNodeId != nodeId || v.outNodeId != nodeId) {
+          this.removeConnection(pageId, k)
+        }
+      })
+
+      p.nodes.delete(nodeId)
+    },
+
+    setNodeName(pageId, nodeId, value) {
+      const n = this.getNode(pageId, nodeId)
+      n.name = value
+    },
+
     //------------------------------PORT--------------------------------------//
     addPort(pageId, nodeId, isInput, portData) {
       const port = {

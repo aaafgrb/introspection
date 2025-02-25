@@ -22,14 +22,31 @@ const { pages } = storeToRefs(customFunctionPagesStore)
 const addFunctionPage = () => {
   customFunctionPagesStore.addPage("New Page", "test")
 }
-const openContextMenu = inject("openContextMenu")
+
+const openOptionSelector = inject("openOptionSelector")
 const contextMenu = (event, pageId) => {
-  openContextMenu(event, [
-    { label: "Focus on", callback: () => { customFunctionPagesStore.focusFunctionPage(pageId) } },
-    { label: "Reset position", callback: () => { customFunctionPagesStore.resetFunctionPagePosition(pageId) } },
-    { label: "Delete", callback: () => { customFunctionPagesStore.closeFunctionPage(pageId) } },
-  ])
+  event.preventDefault();
+  openOptionSelector((option) => {
+    switch (option) {
+      case "Focus on":
+        customFunctionPagesStore.focusFunctionPage(pageId)
+        break;
+      case "Reset position":
+        customFunctionPagesStore.resetFunctionPagePosition(pageId)
+        break;
+      case "Delete":
+        customFunctionPagesStore.closeFunctionPage(pageId)
+        break;
+    }
+  },
+    {
+      x: event.clientX,
+      y: event.clientY,
+      options: ["Focus on", "Reset position", "Delete"]
+    }
+  )
 }
+
 
 </script>
 
