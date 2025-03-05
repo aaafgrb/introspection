@@ -2,7 +2,7 @@
   <FloatingBox :x="x" :y="y" :visible="visible" :teleportTo="teleport">
     <div class="list-selector">
       <button class="close-button" @click="close">&times;</button>
-      <h2>{{ title }}</h2>
+      <h3>{{ title }}</h3>
       <input v-model="search" type="text" placeholder="Search..." class="search-bar" />
 
       <div class="option-list">

@@ -1,5 +1,5 @@
 <template>
-  <div class="port">
+  <div class="port" ref="port" @contextmenu="onContextMenu">
     <span class="handle" :class="{ beingConnected: portData.component.beingConnected }" @click="mouseclick"
       ref="handle"></span>
     {{ portData.data.var ?? portData.data.val ?? "undefined" }}
@@ -8,7 +8,7 @@
 
 <script setup>
 import { useCustomFunctionPagesStore } from '@/stores/useCustomFunctionPagesStore'
-import { onMounted, useTemplateRef } from 'vue'
+import { inject, onMounted, Teleport, useTemplateRef } from 'vue'
 
 const props = defineProps({
   pageId: {
@@ -26,9 +26,9 @@ const props = defineProps({
 const customFunctionPageStore = useCustomFunctionPagesStore()
 
 onMounted(() => {
-  let o = updatePortOffset()
-  customFunctionPageStore.setPortOffset(props.pageId, props.nodeId, props.portData.isInput, props.portData.id,
-    o.x + handleElement.value.offsetWidth / 2, o.y + handleElement.value.offsetHeight / 2)
+  updatePortOffset()
+  customFunctionPageStore.setPortOffsetUpdateFunction(
+    props.pageId, props.nodeId, props.portData.isInput, props.portData.id, updatePortOffset)
 })
 
 const handleElement = useTemplateRef("handle")
@@ -46,11 +46,28 @@ const updatePortOffset = () => {
     offset.x = 0;
     offset.y = 0;
   }
-  return offset
+  customFunctionPageStore.setPortOffset(props.pageId, props.nodeId, props.portData.isInput, props.portData.id,
+    offset.x + handleElement.value.offsetWidth / 2, offset.y + handleElement.value.offsetHeight / 2)
 }
 
 const mouseclick = () => {
   customFunctionPageStore.portCallbackClick(props.pageId, props.nodeId, props.portData.isInput, props.portData.id)
+}
+
+const openOptionSelector = inject("openOptionSelector")
+const portElement = useTemplateRef("port")
+
+const onContextMenu = () => {
+  openOptionSelector((value) => {
+    switch (value) {
+      case "Remove":
+        customFunctionPageStore.deletePort(props.pageId, props.nodeId, props.portData.isInput, props.portData.id)
+        break
+    }
+  }, {
+    teleport: portElement.value, x: 20,
+    options: ["Remove"]
+  })
 }
 
 </script>

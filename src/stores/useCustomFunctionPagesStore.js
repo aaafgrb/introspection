@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { useFunctionRegistryStore } from './useFunctionRegistryStore'
 import { EMPTY_FUNCTION } from '@/lib/customFunctions'
-import { toRaw } from 'vue'
+import { nextTick, toRaw } from 'vue'
 
 export const useCustomFunctionPagesStore = defineStore('custom-function-pages', {
   state: () => (
@@ -113,6 +113,7 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
     },
 
     removePage(pageId) {
+      if (page == this.currentTopPage) this.currentTopPage = null
       this.pages.delete(pageId)
     },
 
@@ -294,7 +295,7 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
       const p = this.getPage(pageId)
       p.connections.forEach((v, k, _m) => {
         if (v.inNodeId == nodeId || v.outNodeId == nodeId) {
-          this.removeConnection(pageId, k)
+          this.deleteConnection(pageId, k)
         }
       })
 
@@ -304,6 +305,18 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
     setNodeName(pageId, nodeId, value) {
       const n = this.getNode(pageId, nodeId)
       n.name = value
+    },
+
+    updateNodePortsOffset(pageId, nodeId) {
+      let n = this.getNode(pageId, nodeId)
+      nextTick(() => {
+        n.inPorts.forEach((v, _k, _m) => {
+          v.component.updateOffset()
+        })
+        n.outPorts.forEach((v, _k, _m) => {
+          v.component.updateOffset()
+        })
+      })
     },
 
     //------------------------------PORT--------------------------------------//
@@ -324,10 +337,32 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
       return port;
     },
 
+    deletePort(pageId, nodeId, isInput, portId) {
+      let p = this.getPage(pageId)
+      let n = this.getNode(pageId, nodeId)
+
+      if (isInput) {
+        this.deleteConnection(pageId, portId)
+        //dont allow input port deletions for now
+        //n.inPorts.delete(portId)
+      } else {
+        p.connections.forEach((v, k, _m) => {
+          if (v.outPortId == portId) this.deleteConnection(pageId, k)
+        })
+        n.outPorts.delete(portId)
+      }
+
+      this.updateNodePortsOffset(pageId, nodeId)
+    },
+
     setPortOffset(pageId, nodeId, isInput, portId, x, y) {
       let p = this.getPort(pageId, nodeId, isInput, portId).component.offset
       p.x = x
       p.y = y
+    },
+
+    setPortOffsetUpdateFunction(pageId, nodeId, isInput, portId, func) {
+      this.getPort(pageId, nodeId, isInput, portId).component.updateOffset = func
     },
 
     portCallbackClick(pageId, nodeId, isInput, portId) {
@@ -342,7 +377,7 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
           }
         } else if (isInput) { //if its the same port and it is input
           //remove the connections from that port
-          this.removeConnection(pageId, portId)
+          this.deleteConnection(pageId, portId)
         }
 
         //clear connecting port
@@ -365,7 +400,7 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
       return connection;
     },
 
-    removeConnection(pageId, inPortId) {
+    deleteConnection(pageId, inPortId) {
       this.getPage(pageId).connections.delete(inPortId)
     }
   }

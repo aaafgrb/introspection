@@ -2,7 +2,7 @@
   <FloatingBox :x="x" :y="y" :visible="visible" :teleportTo="teleport">
     <div class="option-selector">
       <button class="close-button" @click="close">&times;</button>
-      <h2>{{ title }}</h2>
+      <h3>{{ title }}</h3>
 
       <div class="option-list">
         <button v-for="option in options" :key="option" class="option-button" @click="select(option)">

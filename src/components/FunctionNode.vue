@@ -68,6 +68,7 @@ const docs = computed(() => {
 })
 
 const openInputBox = inject("openInputBox")
+const openListSelector = inject("openListSelector")
 const functionNode = useTemplateRef("function-node")
 
 
@@ -75,9 +76,23 @@ const renameNode = () => {
   openInputBox(value => {
     customFunctionPagesStore.setNodeName(props.pageId, props.nodeData.id, value)
   },
-    { y: -80, teleport: functionNode.value })
+    { y: -80, teleport: functionNode.value }
+  )
 }
-const addOutput = () => { }
+const addOutput = () => {
+  openListSelector(value => {
+    //customFunctionPagesStore.setNodeName(props.pageId, props.nodeData.id, value)
+    customFunctionPagesStore.addPort(props.pageId, props.nodeData.id, false, { var: value })
+    customFunctionPagesStore.updateNodePortsOffset(props.pageId, props.nodeData.id)
+  },
+    {
+      x: 155,
+      teleport: functionNode.value,
+      items: functionRegistryStore.getFunctionVariables(props.nodeData.operation),
+      title: "Output name"
+    }
+  )
+}
 const deleteNode = () => { customFunctionPagesStore.deleteNode(props.pageId, props.nodeData.id) }
 
 </script>

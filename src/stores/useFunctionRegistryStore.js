@@ -46,7 +46,21 @@ export const useFunctionRegistryStore = defineStore('function-registry', {
       return 0;
     },
     getFunction: (state) => (name) => state.baseFunctions.get(name) ?? state.customFunctions.get(name),
-    allFunctionsList: (state) => [...state.baseFunctions, ...state.customFunctions].map(([k, _]) => k)
+    allFunctionsList: (state) => [...state.baseFunctions, ...state.customFunctions].map(([k, _]) => k),
+    getFunctionVariables: (state) => (name) => {
+      let f = state.baseFunctions.get(name)
+      if (f) {
+        return ['output']
+      } else {
+        f = state.customFunctions.get(name)
+        if (f) {
+          return f.definition.map(x => x.name)
+        } else {
+          console.warn(`Function ${name} not found. Was unable to get variables. Returning [].`)
+          return []
+        }
+      }
+    },
   },
   actions: {
     async init() {
