@@ -293,7 +293,7 @@ export const useCustomFunctionPagesStore = defineStore('custom-function-pages', 
     deleteNode(pageId, nodeId) {
       const p = this.getPage(pageId)
       p.connections.forEach((v, k, _m) => {
-        if (v.inNodeId != nodeId || v.outNodeId != nodeId) {
+        if (v.inNodeId == nodeId || v.outNodeId == nodeId) {
           this.removeConnection(pageId, k)
         }
       })
